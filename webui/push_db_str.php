@@ -1,6 +1,6 @@
 <?php
 
-function Put_Db_Str($database_name, $table_name, $column, $row, $send_string){
+function pushDatabaseString($database_name, $table_name, $column, $row, $send_string){
     require 'mysql_login.php';
     $db_server = mysql_connect($host, $username, $password);
     if (!$db_server) die("Unable to connect to MySQL: " . mysql_error());

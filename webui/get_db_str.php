@@ -1,6 +1,6 @@
 <?php
-function Get_Db_Str($database_name, $table_name, $string_name, $row){
-    require 'mysql_login.php';
+function pullDatabaseString($database_name, $table_name, $string_name, $row) {
+    include_once 'mysql_login.php';
     $db_server = mysql_connect($host, $username, $password);
     if (!$db_server) die("Unable to connect to MySQL: " . mysql_error());
     mysql_select_db($database_name)
