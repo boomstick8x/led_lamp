@@ -1,6 +1,6 @@
 #include <stm32l1xx.h>
 #include "color_control.h"
-
+#include "usart.h"
 
 //void TIM2_IRQHandler();
 
@@ -11,6 +11,7 @@ int main(){
 	Color_SetR(200);
 	Color_SetG(200);
 	Color_SetB(0);
+	USART_Init();
 	
   RCC->AHBENR |= RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOAEN;;
   GPIOB->MODER |= GPIO_MODER_MODER7_0 | GPIO_MODER_MODER6_0;

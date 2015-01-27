@@ -1,1 +1,1 @@
-void USART_Init();
+void USART_Init(void);

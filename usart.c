@@ -8,21 +8,30 @@
 
 
 void USART_Init(){
-	//pa10 - USART1_RX
-	//pa9 - USART1_TX
-//	alternate afio7
-
+	RCC->CR |= RCC_CR_HSION; //Включаем тактовый генератор HSI
+	while(!(RCC->CR & RCC_CR_HSIRDY)); //Ждем его стабилизации
+	RCC->CFGR |= RCC_CFGR_SW_HSI; //Выбираем источником тактовой частоты SYSCLK генератор HSI
+	RCC->CR &= ~RCC_CR_MSION; //Отключаем генератор MSI.
+	//GPIOA CONFIGURATION
+	RCC -> AHBENR |= RCC_AHBENR_GPIOAEN;	
+	GPIOA -> MODER |= (GPIO_MODER_MODER9_1 | GPIO_MODER_MODER10_1);//AF for PA9 and PA10
+	GPIOA -> OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR9_1 | GPIO_OSPEEDER_OSPEEDR10_1);
+	GPIOA -> OTYPER &= ~(GPIO_OTYPER_OT_9);//push-pull for output
+ 	GPIOA -> PUPDR &= ~(GPIO_PUPDR_PUPDR10);//no pull-up, pull-down for input
+ 	GPIOA -> AFR[1] |= (0x770);//afio7 for pa9 - USART1_TX and pa10 - USART1_RX
+ 	//USART CONFIGURATION
+ 	NVIC_EnableIRQ (USART1_IRQn);
+	RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;//USART CLOCK ENABLE
+	USART1 -> BRR = 0x683; //9600 baud rate 0x683
+	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE | USART_CR1_TXEIE;//enable: recive, transimt, USART, Interrupt Read Data not empty
 
 
 void Usart_Init(void);
-void Led_Init(void);
-void Sleep(uint16_t);
-void Blink_Led(uint8_t, char, uint32_t);
 void Usart_Write(char);
 void Usart_Read(char);
 
 
-Led_Init();
+
 Usart_Init();
 
 while(1){
@@ -37,61 +46,17 @@ Usart_Write(' ');
 }
 
 
-
 }
 }
 
+	
 
 
-void Usart_Init(){
-	RCC->CR |= RCC_CR_HSION; //Включаем тактовый генератор HSI
-	while(!(RCC->CR & RCC_CR_HSIRDY)); //Ждем его стабилизации
-	RCC->CFGR |= RCC_CFGR_SW_HSI; //Выбираем источником тактовой частоты SYSCLK генератор HSI
-	RCC->CR &= ~RCC_CR_MSION; //Отключаем генератор MSI.
-	//GPIOA CONFIGURATION
-	RCC -> AHBENR |= RCC_AHBENR_GPIOAEN;	
-	GPIOA -> MODER |= (GPIO_MODER_MODER9_1 | GPIO_MODER_MODER10_1);//output AF
-	GPIOA -> OTYPER &= ~(GPIO_OTYPER_OT_9);//push-pull for 
-	GPIOA -> OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR9_1 | GPIO_OSPEEDER_OSPEEDR10_1);
- 	GPIOA -> PUPDR &= ~(GPIO_PUPDR_PUPDR10);//no pull-up, pull-down for input
- 	GPIOA -> AFR[1] |= (0x770);
- 	//USART CONFIGURATION
- 	NVIC_EnableIRQ (USART1_IRQn);
-	RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;//USART CLOCK ENABLE
-	USART1 -> BRR = 0x683; //9600 baud rate 0x683
-	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE | USART_CR1_TXEIE;//enable: recive, transimt, USART, Interrupt Read Data not empty
-	Blink_Led(1, 'b', 90000);
-}
 
-void Led_Init(){
-	RCC->AHBENR |= RCC_AHBENR_GPIOBEN;
-	GPIOB->MODER |= GPIO_MODER_MODER7_0 | GPIO_MODER_MODER6_0;
-	GPIOB->OTYPER &= ~GPIO_OTYPER_OT_7 | GPIO_OTYPER_OT_6;
-	GPIOB->PUPDR &= ~GPIO_PUPDR_PUPDR7 | GPIO_PUPDR_PUPDR6;
-	GPIOB->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR7 | GPIO_OSPEEDER_OSPEEDR6;
-}
 
-void Sleep(uint16_t z){
-	for (int i = 0; i < z; ++i);
-}
 
-void Blink_Led(uint8_t t, char c, uint32_t z){
-		if(c == 'b'){
-			for (int i = 0; i < t; ++i){
-				for (int s = 0; s < z; ++s)
-					BLUE_LED_ON;
-				for (int s = 0; s < z; ++s)
-					BLUE_LED_OFF;
-			}
-		}
-		else
-			for (int i = 0; i < t; ++i){
-				for (int s = 0; s < z; ++s)
-					GREEN_LED_ON;
-				for (int s = 0; s < z; ++s)
-					GREEN_LED_OFF;
-			}
-	}
+
+
 	
 void Usart_Write(char data)
 {
@@ -110,23 +75,13 @@ void Usart_Read(char data)
 void USART1_IRQHandler(void){
 	char data;
 	if(USART1->SR & USART_SR_RXNE){//Read data register not empty
-		Blink_Led(1, 'b', 10000);
 		Usart_Read(data = USART1->DR);     
 	}
 
 
 		if(USART1->SR & USART_SR_TC){
-			Blink_Led(1, 'g', 10000);
 		}
 }
-
-	
-	
-	
-	
-	//RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;
-	//GPIOA -> A
-	
 
 	
 
