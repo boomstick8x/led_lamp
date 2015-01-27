@@ -8,7 +8,9 @@
 
 
 void USART_Init(){
-
+	//pa10 - USART1_RX
+	//pa9 - USART1_TX
+//	alternate afio7
 
 
 
@@ -125,9 +127,7 @@ void USART1_IRQHandler(void){
 	//RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;
 	//GPIOA -> A
 	
-	//pa10 - USART1_RX
-	//pa9 - USART1_TX
-//	alternate afio7
+
 	
 
 
