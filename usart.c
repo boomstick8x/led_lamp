@@ -3,7 +3,7 @@
 void USART_Init();
 
 void USART_Init(){
-	RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;
+	//RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;
 	//GPIOA -> A
 	
 	//pa10 - USART1_RX

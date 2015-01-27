@@ -1,10 +1,10 @@
 
 #include "stm32l1xx.h"
-
-void TIM2_IRQHandler();
+void Color_Init();
+//void TIM2_IRQHandler();
 int main(){
-void PWM_Init();
-void USART_Init();
+Color_Init();
+//void USART_Init();
 	
 	
   RCC->AHBENR |= RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOAEN;;
@@ -20,18 +20,23 @@ void USART_Init();
 	GPIOA->OTYPER &= ~GPIO_OTYPER_OT_2;
 	GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR2;
 	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR2;
-	GPIOA->ODR |= GPIO_ODR_ODR_2;*/
+	GPIOA->ODR |= GPIO_ODR_ODR_2;
+	GPIOA->ODR &= ~GPIO_ODR_ODR_2;*/
+	
+	
 	
 while(1){
+	
+	
         }
 }
 
 
-void TIM2_IRQHandler()//Функция обработчика прерывания от таймера 2
+/*void TIM2_IRQHandler()//Функция обработчика прерывания от таймера 2
 	{
 	TIM2->SR &= ~ TIM_SR_UIF;//clear update interrupt flag bit
 	GPIOB->ODR ^= GPIO_ODR_ODR_7;//Инвертируем состояние выхода - зажигаем или гасим светодиод
 	//GPIOA->ODR ^= GPIO_ODR_ODR_2;//Инвертируем состояние выхода - зажигаем или гасим светодиод
-	}
+	}*/
 
 
