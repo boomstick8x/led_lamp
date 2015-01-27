@@ -1,10 +1,14 @@
+#include <stm32l1xx.h>
+#include "color_control.h"
 
-#include "stm32l1xx.h"
-void Color_Init();
+
 //void TIM2_IRQHandler();
+
+
+
 int main(){
-Color_Init();
-//void USART_Init();
+
+	Color_Init();
 	
 	
   RCC->AHBENR |= RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOAEN;;
@@ -24,11 +28,10 @@ Color_Init();
 	GPIOA->ODR &= ~GPIO_ODR_ODR_2;*/
 	
 	
+
+while(1){}
 	
-while(1){
 	
-	
-        }
 }
 
 

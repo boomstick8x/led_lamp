@@ -1,6 +1,6 @@
 #include "stm32l1xx.h"
 
-void USART_Init();
+
 
 void USART_Init(){
 	//RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;
