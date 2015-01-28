@@ -32,7 +32,8 @@ int main(){
 	
 
 while(1){
-	Usart_Write('o');
+	//Usart_Write('o');
+	
 	}
 	
 	

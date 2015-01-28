@@ -34,16 +34,18 @@ void Usart_Write(char data){
   USART1->DR = data; //Передача данных
 	}
 
-void Usart_Read(char data){
+void Data_Received(char data){
   while(!(USART1->SR & USART_SR_RXNE)); //Проверка завершения приёма предыдущих данных
   data = USART1->DR; //Передача данных
+	
 	}
 
 
 void USART1_IRQHandler(void){
 	char data;
 	if(USART1->SR & USART_SR_RXNE){//Read data register not empty
-		Usart_Read(data = USART1->DR);     
+		Data_Received(data = USART1->DR);     
+
 	}
 
 
