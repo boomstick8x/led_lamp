@@ -1,15 +1,18 @@
 #include <stm32l1xx.h>
 #include "color_control.h"
 #include "usart.h"
-
-//void TIM2_IRQHandler();
-
-
+#include "cmdstructure.h"
 
 int main(){
+		CmdData mystruct;
+	CmdData *cmd;
+	cmd=&mystruct;	
+
+
+	
 	Color_Init();
-	Color_SetR(200);
-	Color_SetG(200);
+	Color_SetR(0);
+	Color_SetG(0);
 	Color_SetB(0);
 	USART_Init();
 	
@@ -28,12 +31,12 @@ int main(){
 	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR2;
 	GPIOA->ODR |= GPIO_ODR_ODR_2;
 	GPIOA->ODR &= ~GPIO_ODR_ODR_2;*/
-	
-	
+
+
+cmd->b=10;
 
 while(1){
-	//Usart_Write('o');
-	
+	Color_SetB(cmd->b);
 	}
 	
 	
