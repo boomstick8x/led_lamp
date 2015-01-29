@@ -1,4 +1,5 @@
-#include "stm32l1xx.h"
+#include <stm32l1xx.h>
+#include <stdint.h>
 #include "cmdstructure.h"
 
 
@@ -29,6 +30,12 @@ void USART_Init(){
 
 void Data_Received(char data){//
  // while(!(USART1->SR & USART_SR_RXNE)); //Проверка завершения приёма предыдущих данных
+	data=(USART1->DR);
+		USART1->DR=data;
+		if(data=='='&(cmd->b)<250)
+		cmd->b=(cmd->b)+5;
+		if(data=='-'&(cmd->b)>5)
+		cmd->b=(cmd->b)-5;
 	}
 
 void Usart_Write(char data){
@@ -38,19 +45,15 @@ void Usart_Write(char data){
 
 
 void USART1_IRQHandler(void){
-	uint8_t data;
+	uint32_t data;
 	if(USART1->SR & USART_SR_RXNE){//Rx register not empty
 		GPIOB->ODR ^= GPIO_ODR_ODR_7;
 		data=(USART1->DR);
+		Data_Recieved(data);
 		USART1->DR=data;
-		if(data=='='&(cmd->b)<250)
-		cmd->b=(cmd->b)+5;
-		if(data=='-'&(cmd->b)>5)
-		cmd->b=(cmd->b)-5;
 		
 		}
-	//	if(USART1->SR & USART_SR_TC){//???
-		//}
+
 }
 
 	
