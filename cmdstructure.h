@@ -10,5 +10,3 @@
 	extern CmdData *cmd;
 	
 #endif
-
-	

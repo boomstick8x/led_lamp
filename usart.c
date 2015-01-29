@@ -23,39 +23,31 @@ void USART_Init(){
 	RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;//USART CLOCK ENABLE
 	USART1 -> BRR = 0x683; //9600 baud rate 0x683
 	//USART1 -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE | USART_CR1_TXEIE;//enable: recive, transimt, USART, Interrupt Read Data not empty
-		USART1 -> CR1  |= USART_CR1_RE | USART_CR1_RXNEIE | USART_CR1_UE ;//enable: recive, IRQ Data not empty, USART
-
-	
+		USART1 -> CR1  |= USART_CR1_RE | USART_CR1_RXNEIE | USART_CR1_UE ;//enable: recive, IRQ Data not empty, USART	
 	}
 
-
-void Usart_Write(char data){
-  while(!(USART1->SR & USART_SR_TC)); //Проверка завершения передачи предыдущих данных
-  USART1->DR = data; //Передача данных
-	}
 
 void Data_Received(char data){//
  // while(!(USART1->SR & USART_SR_RXNE)); //Проверка завершения приёма предыдущих данных
-  //data = USART1->DR; //Передача данных
+	CmdData mystruct;
+	CmdData *cmd=&mystruct;
+	cmd->b=254;
 	}
 
 void USART1_IRQHandler(void){
-	char data;
-			CmdData mystruct;
-	CmdData *cmd;
-	cmd=&mystruct;
 	if(USART1->SR & USART_SR_RXNE){//Rx register not empty
-			
-
-			(mystruct.b)=(USART1->DR);
-		//Data_Received(data);
-	}
+		GPIOB->ODR ^= GPIO_ODR_ODR_7;
+		Data_Received	(USART1->DR);
+		}
 		//if(USART1->SR & USART_SR_TC){//???
 		//}
 }
 
 	
-
+void Usart_Write(char data){
+  while(!(USART1->SR & USART_SR_TC)); //Проверка завершения передачи предыдущих данных
+  USART1->DR = data; //Передача данных
+	}
 
 	
 /*AT Command ends with “\r\n”

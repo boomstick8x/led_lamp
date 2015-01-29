@@ -4,10 +4,8 @@
 #include "cmdstructure.h"
 
 int main(){
-		CmdData mystruct;
-	CmdData *cmd;
-	cmd=&mystruct;	
-
+	CmdData mystruct;
+CmdData *cmd=&mystruct;
 
 	
 	Color_Init();
@@ -33,8 +31,8 @@ int main(){
 	GPIOA->ODR &= ~GPIO_ODR_ODR_2;*/
 
 
-cmd->b=10;
-
+	Color_SetB(10);
+	(cmd->b)=10;
 while(1){
 	Color_SetB(cmd->b);
 	}
