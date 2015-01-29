@@ -38,9 +38,14 @@ void Usart_Write(char data){
 
 
 void USART1_IRQHandler(void){
+	uint8_t data;
 	if(USART1->SR & USART_SR_RXNE){//Rx register not empty
 		GPIOB->ODR ^= GPIO_ODR_ODR_7;
-		cmd->b=(USART1->DR);
+		data=(USART1->DR);
+		if(data=='='&((cmd->b)<250))
+		cmd->b=(cmd->b)+5;
+		if(data=='-'&((cmd->b)>5))
+		cmd->b=(cmd->b)-5;
 		
 		}
 	//	if(USART1->SR & USART_SR_TC){//???

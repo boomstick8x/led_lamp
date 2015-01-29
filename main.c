@@ -1,4 +1,5 @@
 #include <stm32l1xx.h>
+#include <stdint.h>
 #include "color_control.h"
 #include "usart.h"
 #include "cmdstructure.h"
@@ -29,18 +30,8 @@ int main(){
 	GPIOA->ODR &= ~GPIO_ODR_ODR_2;*/
 
 while(1){
-	char x;	
-	if(cmd->b=='0'){
-		Usart_Write(cmd->b);
-			Color_SetB(0);
-		}
 	
-	if(cmd->b=='1'){
-		Usart_Write(cmd->b);
-			Color_SetB(100);
-		}
-	
-	
+Color_SetB(cmd->b);
 	}
 	
 	

@@ -1,10 +1,11 @@
+#include <stdint.h>
 #ifndef Cmd_Data_Guard
 #define Cmd_Data_Guard
 	typedef struct _CmdData
 	{
-	char r;
-	char g;
-	char b;
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
 	}CmdData;
 	extern CmdData mystruct;
 	extern CmdData *cmd;

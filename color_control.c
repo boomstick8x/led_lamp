@@ -37,6 +37,6 @@ TIM2->CCR2 = r;
 void Color_SetG(char g){
 TIM2->CCR3 = g;
 }
-void Color_SetB(char b){
+void Color_SetB(uint8_t b){
 TIM2->CCR4 = b;
 }
