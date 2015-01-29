@@ -6,9 +6,6 @@
 	CmdData *cmd=&mystruct;
 	
 int main(){
-
-
-	
 	Color_Init();
 	Color_SetR(0);
 	Color_SetG(0);
@@ -35,6 +32,7 @@ int main(){
 	Color_SetB(0);
 while(1){
 	Color_SetB(cmd->b);
+Usart_Write('a');
 	}
 	
 	
