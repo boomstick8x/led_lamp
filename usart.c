@@ -42,9 +42,10 @@ void USART1_IRQHandler(void){
 	if(USART1->SR & USART_SR_RXNE){//Rx register not empty
 		GPIOB->ODR ^= GPIO_ODR_ODR_7;
 		data=(USART1->DR);
-		if(data=='='&((cmd->b)<250))
+		USART1->DR=data;
+		if(data=='='&(cmd->b)<250)
 		cmd->b=(cmd->b)+5;
-		if(data=='-'&((cmd->b)>5))
+		if(data=='-'&(cmd->b)>5)
 		cmd->b=(cmd->b)-5;
 		
 		}
