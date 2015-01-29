@@ -29,15 +29,14 @@ void USART_Init(){
 
 void Data_Received(char data){//
  // while(!(USART1->SR & USART_SR_RXNE)); //Проверка завершения приёма предыдущих данных
-	CmdData mystruct;
-	CmdData *cmd=&mystruct;
-	cmd->b=254;
+
+
 	}
 
 void USART1_IRQHandler(void){
 	if(USART1->SR & USART_SR_RXNE){//Rx register not empty
 		GPIOB->ODR ^= GPIO_ODR_ODR_7;
-		Data_Received	(USART1->DR);
+			cmd->b=(USART1->DR);
 		}
 		//if(USART1->SR & USART_SR_TC){//???
 		//}

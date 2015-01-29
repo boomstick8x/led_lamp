@@ -2,10 +2,11 @@
 #include "color_control.h"
 #include "usart.h"
 #include "cmdstructure.h"
-
-int main(){
 	CmdData mystruct;
-CmdData *cmd=&mystruct;
+	CmdData *cmd=&mystruct;
+	
+int main(){
+
 
 	
 	Color_Init();
@@ -31,8 +32,7 @@ CmdData *cmd=&mystruct;
 	GPIOA->ODR &= ~GPIO_ODR_ODR_2;*/
 
 
-	Color_SetB(10);
-	(cmd->b)=10;
+	Color_SetB(0);
 while(1){
 	Color_SetB(cmd->b);
 	}
