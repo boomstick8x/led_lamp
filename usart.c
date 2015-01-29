@@ -22,7 +22,7 @@ void USART_Init(){
  	NVIC_EnableIRQ (USART1_IRQn);//Usart enable IRQ
 	RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;//USART CLOCK ENABLE
 	USART1 -> BRR = 0x683; //9600 baud rate 0x683
-	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE | USART_CR1_TXEIE;//enable: recive, transimt, USART, Interrupt Read Data not empty
+	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE ;//| USART_CR1_TXEIE;//enable: recive, transimt, USART, Interrupt Read Data not empty
 	//	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_RXNEIE | USART_CR1_UE ;//enable: recive, IRQ Data not empty, USART	
 	}
 
@@ -43,8 +43,8 @@ void USART1_IRQHandler(void){
 		cmd->b=(USART1->DR);
 		
 		}
-		if(USART1->SR & USART_SR_TC){//???
-		}
+	//	if(USART1->SR & USART_SR_TC){//???
+		//}
 }
 
 	

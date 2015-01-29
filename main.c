@@ -28,11 +28,19 @@ int main(){
 	GPIOA->ODR |= GPIO_ODR_ODR_2;
 	GPIOA->ODR &= ~GPIO_ODR_ODR_2;*/
 
-
-	Color_SetB(0);
 while(1){
-	Color_SetB(cmd->b);
-Usart_Write('a');
+	char x;	
+	if(cmd->b=='0'){
+		Usart_Write(cmd->b);
+			Color_SetB(0);
+		}
+	
+	if(cmd->b=='1'){
+		Usart_Write(cmd->b);
+			Color_SetB(100);
+		}
+	
+	
 	}
 	
 	
