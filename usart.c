@@ -1,6 +1,8 @@
 #include <stm32l1xx.h>
 #include <stdint.h>
 #include "cmdstructure.h"
+char CmdDataArray[10];
+uint8_t ArrayI=0;
 
 
 void USART_Init(){
@@ -27,31 +29,36 @@ void USART_Init(){
 	//	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_RXNEIE | USART_CR1_UE ;//enable: recive, IRQ Data not empty, USART	
 	}
 
+void Usart_Write(uint16_t ArrayPointer){
+	uint8_t i;
+	char buf[10];
+  while(!(USART1->SR & USART_SR_TC)); //Проверка завершения передачи предыдущих данных
+	
+	
+	
+	while( *(ArrayPointer)!='0')
+	USART1->DR = *((char*)ArrayPointer+i); //Передача данных
+	}
 
 void Data_Received(char data){//
- // while(!(USART1->SR & USART_SR_RXNE)); //Проверка завершения приёма предыдущих данных
-	data=(USART1->DR);
-		USART1->DR=data;
-		if(data=='='&(cmd->b)<250)
-		cmd->b=(cmd->b)+5;
-		if(data=='-'&(cmd->b)>5)
-		cmd->b=(cmd->b)-5;
+	// while(!(USART1->SR & USART_SR_RXNE)); //Проверка завершения приёма предыдущих данных
+	CmdDataArray[ArrayI]=data;
+		ArrayI++;
+	
+	if(data==0x0D){
+		CmdDataArray[ArrayI]=0;
+		Usart_Write((uint16_t)CmdDataArray);
+	}
 	}
 
-void Usart_Write(char data){
-  while(!(USART1->SR & USART_SR_TC)); //Проверка завершения передачи предыдущих данных
-  USART1->DR = data; //Передача данных
-	}
+
 
 
 void USART1_IRQHandler(void){
-	uint32_t data;
+	char data;
 	if(USART1->SR & USART_SR_RXNE){//Rx register not empty
 		GPIOB->ODR ^= GPIO_ODR_ODR_7;
-		data=(USART1->DR);
-		Data_Recieved(data);
-		USART1->DR=data;
-		
+		Data_Received(USART1->DR);
 		}
 
 }

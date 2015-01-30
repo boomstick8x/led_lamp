@@ -31,7 +31,7 @@ int main(){
 
 while(1){
 	
-Color_SetB(cmd->b);
+//Color_SetB(cmd->b);
 	}
 	
 	
