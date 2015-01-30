@@ -4,11 +4,31 @@
 char CmdDataArray[10];
 uint8_t ArrayI=0;
 
-void Usart_Write(char data){
-	uint8_t i;
-  while(!(USART1->SR & USART_SR_TC)); //Проверка завершения передачи предыдущих данных
-	USART1->DR = data; //Передача данных
-	}
+
+typedef struct {
+char a;
+char b;
+char c;
+char d;
+} vodka;
+
+
+
+
+
+
+
+
+
+void Usart_Write(char* data){
+	while(*data!=0)
+		{
+			while(!(USART1->SR & USART_SR_TC));//Проверка завершения передачи предыдущих данных
+			USART1->DR=(*data);
+			data++;
+		}
+}
+
 
 void Data_Received(char data){//
 	// while(!(USART1->SR & USART_SR_RXNE)); //Проверка завершения приёма предыдущих данных
@@ -16,18 +36,25 @@ void Data_Received(char data){//
 	ArrayI++;
 	if(data==0x0D){
 		CmdDataArray[ArrayI]=0;
+		Usart_Write(CmdDataArray);
 		}
 	}
 
-void usart_print(char* str)	{
-	while(*str!=0)
-		{
-		Usart_Write(*str);
-		str++;
-		}
-}
+
 
 void USART_Init(){
+	char i;
+	vodka v;
+	
+v.a='H';
+v.b='u';
+v.c='i';
+v.d='!';
+	char q=v.a;
+	char *ptr=&q;
+	
+	
+	
 	RCC->CR |= RCC_CR_HSION; //Включаем тактовый генератор HSI
 	while(!(RCC->CR & RCC_CR_HSIRDY)); //Ждем его стабилизации
 	RCC->CFGR |= RCC_CFGR_SW_HSI; //Выбираем источником тактовой частоты SYSCLK генератор HSI
@@ -48,7 +75,18 @@ void USART_Init(){
 	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE ;//| USART_CR1_TXEIE;//enable: recive, transimt, USART, Interrupt Read Data not empty
 	//	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_RXNEIE | USART_CR1_UE ;//enable: recive, IRQ Data not empty, USART	
 	
-	usart_print("It’s working!!\n");
+	
+
+	
+	//Usart_Write("USART1 ready\n");
+
+	Usart_Write(ptr);
+	
+	
+
+	
+	
+	
 	}
 
 void USART1_IRQHandler(void){
