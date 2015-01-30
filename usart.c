@@ -5,6 +5,9 @@ char CmdDataArray[10];
 uint8_t ArrayI=0;
 
 
+
+void usart_putChar(char c);
+
 void USART_Init(){
 	
 	
@@ -27,17 +30,14 @@ void USART_Init(){
 	USART1 -> BRR = 0x683; //9600 baud rate 0x683
 	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE ;//| USART_CR1_TXEIE;//enable: recive, transimt, USART, Interrupt Read Data not empty
 	//	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_RXNEIE | USART_CR1_UE ;//enable: recive, IRQ Data not empty, USART	
+	
 	}
 
-void Usart_Write(uint16_t ArrayPointer){
+	
+void Usart_Write(char data){
 	uint8_t i;
-	char buf[10];
   while(!(USART1->SR & USART_SR_TC)); //Проверка завершения передачи предыдущих данных
-	
-	
-	
-	while( *(ArrayPointer)!='0')
-	USART1->DR = *((char*)ArrayPointer+i); //Передача данных
+	USART1->DR = data; //Передача данных
 	}
 
 void Data_Received(char data){//
@@ -47,11 +47,19 @@ void Data_Received(char data){//
 	
 	if(data==0x0D){
 		CmdDataArray[ArrayI]=0;
-		Usart_Write((uint16_t)CmdDataArray);
+
 	}
 	}
 
-
+	void usart_print(char* str)
+{
+while(*str!=0)
+{
+	Usart_Write(*str);
+	str++;
+}
+}
+usart_print(&"It’s working!!\n");
 
 
 void USART1_IRQHandler(void){
@@ -60,7 +68,6 @@ void USART1_IRQHandler(void){
 		GPIOB->ODR ^= GPIO_ODR_ODR_7;
 		Data_Received(USART1->DR);
 		}
-
 }
 
 	
