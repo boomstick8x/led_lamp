@@ -1,4 +1,4 @@
-#include <stdint.h>
 void USART_Init(void);
-void Usart_Write(uint16_t);
 void Data_Received(char);
+void Usart_SendChar(char);
+void Usart_SendString(char);

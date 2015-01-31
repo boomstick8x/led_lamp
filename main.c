@@ -1,5 +1,4 @@
 #include <stm32l1xx.h>
-#include <stdint.h>
 #include "color_control.h"
 #include "usart.h"
 #include "cmdstructure.h"

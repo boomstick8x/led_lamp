@@ -1,13 +1,16 @@
 #include <stm32l1xx.h>
-#include <stdint.h>
+#include <cstdlib>
+#include <string.h>
 #include "cmdstructure.h"
-char CmdDataArray[10];
-uint8_t ArrayI=0;
+#include "color_control.h"
 
-void Usart_SendChar(char data)
+char CmdDataArray[10];
+uint8_t ArrI=0;
+
+void Usart_SendChar(char *data)
 	{
 		while(!(USART1->SR & USART_SR_TC));//Проверка завершения передачи предыдущих данных
-		USART1->DR=(data);
+		USART1->DR=(*data);
 	}
 	
 void Usart_SendString(char* data)
@@ -20,15 +23,27 @@ void Usart_SendString(char* data)
 		}
 }
 
-
-void Data_Received(char data){//
-	// while(!(USART1->SR & USART_SR_RXNE)); //Проверка завершения приёма предыдущих данных
-	CmdDataArray[ArrayI]=data;
-	ArrayI++;
-	if(data==0x0D){
-		CmdDataArray[ArrayI]=0;
-		Usart_SendString(CmdDataArray);
-		}
+void Data_Received(char data)
+	{
+		CmdDataArray[ArrI++]=data;
+		char value=atoi(CmdDataArray);
+		if(data==0x0D)
+			{
+			ArrI=0;
+			/*Usart_SendString(CmdDataArray);
+			Usart_SendString("\n");	
+			char *p=strtok(CmdDataArray, ",");
+			while(p)
+				{	
+					p=strtok(NULL, ",");
+				}*/
+		//int i=0;
+		//for(;i<=ArrI;i++)			
+		
+				Usart_SendString(CmdDataArray);
+				Usart_SendString("\n\r");
+				Color_SetR(value);
+			}
 	}
 
 
@@ -54,11 +69,10 @@ void USART_Init()
 	USART1 -> BRR = 0x683; //9600 baud rate 0x683
 	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE ;//| USART_CR1_TXEIE;//enable: recive, transimt, USART, Interrupt Read Data not empty
 	//	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_RXNEIE | USART_CR1_UE ;//enable: recive, IRQ Data not empty, USART	
-	Usart_SendString("USART1 ready\n");	
+	Usart_SendString("USART1 ready\n\r");	
 	}
 
 void USART1_IRQHandler(void){
-	char data;
 	if(USART1->SR & USART_SR_RXNE){//Rx register not empty
 		GPIOB->ODR ^= GPIO_ODR_ODR_7;
 		Data_Received(USART1->DR);
