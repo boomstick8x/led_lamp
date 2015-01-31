@@ -23,54 +23,60 @@ void Usart_SendString(char* data)
 		}
 }
 
+void Usart_Parsing(void)
+	{	
+		ArrI=0;
+		char *p=strtok(CmdDataArray, ",");
+		CmdDataArray[0]=atoi(p);
+		while(p)
+			{	
+				p=strtok(NULL, ",");
+				CmdDataArray[++ArrI]=atoi(p);		
+			}
+		ArrI=0;
+		Color_SetR(CmdDataArray[0]);
+		Color_SetG(CmdDataArray[1]);
+		Color_SetB(CmdDataArray[2]);
+	}
+
 void Data_Received(char data)
 	{
 		CmdDataArray[ArrI]=data;
 		ArrI++;
 		if(data==0x0D)
-			{
-				ArrI=0;
-				char *p=strtok(CmdDataArray, ",");
-				CmdDataArray[0]=atoi(p);
-				while(p)
-					{	
-						p=strtok(NULL, ",");
-						CmdDataArray[++ArrI]=atoi(p);		
-					}
-				Color_SetG(CmdDataArray[1]);
-				Color_SetB(CmdDataArray[2]);
-				Color_SetR(CmdDataArray[0]);
-			}
+			Usart_Parsing();
 	}
-
+	
+	
 void USART_Init()
 	{
-	RCC->CR |= RCC_CR_HSION; //Включаем тактовый генератор HSI
-	while(!(RCC->CR & RCC_CR_HSIRDY)); //Ждем его стабилизации
-	RCC->CFGR |= RCC_CFGR_SW_HSI; //Выбираем источником тактовой частоты SYSCLK генератор HSI
-	RCC->CR &= ~RCC_CR_MSION; //Отключаем генератор MSI.
+		RCC->CR |= RCC_CR_HSION; //Включаем тактовый генератор HSI
+		while(!(RCC->CR & RCC_CR_HSIRDY)); //Ждем его стабилизации
+		RCC->CFGR |= RCC_CFGR_SW_HSI; //Выбираем источником тактовой частоты SYSCLK генератор HSI
+		RCC->CR &= ~RCC_CR_MSION; //Отключаем генератор MSI.
 	
-	//GPIOA CONFIGURATION
-	RCC -> AHBENR |= RCC_AHBENR_GPIOAEN;	
-	GPIOA -> MODER |= (GPIO_MODER_MODER9_1 | GPIO_MODER_MODER10_1);//AF for PA9 and PA10
-	GPIOA -> OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR9_1 | GPIO_OSPEEDER_OSPEEDR10_1);
-	GPIOA -> OTYPER &= ~(GPIO_OTYPER_OT_9);//push-pull for output
- 	GPIOA -> PUPDR &= ~(GPIO_PUPDR_PUPDR10);//no pull-up, ?pull-down? for input
- 	GPIOA -> AFR[1] |= (0x770);//afio7 for pa9 - USART1_TX and pa10 - USART1_RX
+		//GPIOA CONFIGURATION
+		RCC -> AHBENR |= RCC_AHBENR_GPIOAEN;	
+		GPIOA -> MODER |= (GPIO_MODER_MODER9_1 | GPIO_MODER_MODER10_1);//AF for PA9 and PA10
+		GPIOA -> OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR9_1 | GPIO_OSPEEDER_OSPEEDR10_1);
+		GPIOA -> OTYPER &= ~(GPIO_OTYPER_OT_9);//push-pull for output
+		GPIOA -> PUPDR &= ~(GPIO_PUPDR_PUPDR10);//no pull-up, ?pull-down? for input
+		GPIOA -> AFR[1] |= (0x770);//afio7 for pa9 - USART1_TX and pa10 - USART1_RX
 	
- 	//USART CONFIGURATION
- 	NVIC_EnableIRQ (USART1_IRQn);//Usart enable IRQ
-	RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;//USART CLOCK ENABLE
-	USART1 -> BRR = 0x683; //9600 baud rate 0x683
-	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE ;//| USART_CR1_TXEIE;//enable: recive, transimt, USART, Interrupt Read Data not empty
-	//	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_RXNEIE | USART_CR1_UE ;//enable: recive, IRQ Data not empty, USART	
-	Usart_SendString("USART1 ready\n\r");	
+		//USART CONFIGURATION
+		NVIC_EnableIRQ (USART1_IRQn);//Usart enable IRQ
+		RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;//USART CLOCK ENABLE
+		USART1 -> BRR = 0x683; //9600 baud rate 0x683
+		USART1 -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE ;//| USART_CR1_TXEIE;//enable: recive, transimt, USART, Interrupt Read Data not empty
+		//	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_RXNEIE | USART_CR1_UE ;//enable: recive, IRQ Data not empty, USART	
+		Usart_SendString("USART1 ready\n\r");	
 	}
 
 void USART1_IRQHandler(void){
-	if(USART1->SR & USART_SR_RXNE){//Rx register not empty
-		GPIOB->ODR ^= GPIO_ODR_ODR_7;
-		Data_Received(USART1->DR);
+	if(USART1->SR & USART_SR_RXNE)//Rx register not empty
+		{
+			GPIOB->ODR ^= GPIO_ODR_ODR_7;
+			Data_Received(USART1->DR);
 		}
 }
 
