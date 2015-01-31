@@ -4,13 +4,13 @@
 #include "cmdstructure.h"
 #include "color_control.h"
 
-char CmdDataArray[10];
+char CmdDataArray[100];
 uint8_t ArrI=0;
 
-void Usart_SendChar(char *data)
+void Usart_SendChar(char data)
 	{
 		while(!(USART1->SR & USART_SR_TC));//Проверка завершения передачи предыдущих данных
-		USART1->DR=(*data);
+		USART1->DR=(data);
 	}
 	
 void Usart_SendString(char* data)
@@ -25,28 +25,23 @@ void Usart_SendString(char* data)
 
 void Data_Received(char data)
 	{
-		CmdDataArray[ArrI++]=data;
-		char value=atoi(CmdDataArray);
+		CmdDataArray[ArrI]=data;
+		ArrI++;
 		if(data==0x0D)
 			{
-			ArrI=0;
-			/*Usart_SendString(CmdDataArray);
-			Usart_SendString("\n");	
-			char *p=strtok(CmdDataArray, ",");
-			while(p)
-				{	
-					p=strtok(NULL, ",");
-				}*/
-		//int i=0;
-		//for(;i<=ArrI;i++)			
-		
-				Usart_SendString(CmdDataArray);
-				Usart_SendString("\n\r");
-				Color_SetR(value);
+				ArrI=0;
+				char *p=strtok(CmdDataArray, ",");
+				CmdDataArray[0]=atoi(p);
+				while(p)
+					{	
+						p=strtok(NULL, ",");
+						CmdDataArray[++ArrI]=atoi(p);		
+					}
+				Color_SetG(CmdDataArray[1]);
+				Color_SetB(CmdDataArray[2]);
+				Color_SetR(CmdDataArray[0]);
 			}
 	}
-
-
 
 void USART_Init()
 	{
