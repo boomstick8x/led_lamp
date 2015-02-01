@@ -1,9 +1,9 @@
 #include <stm32l1xx.h>
 #include "color_control.h"
 #include "usart.h"
-#include "cmdstructure.h"
-	CmdData mystruct;
-	CmdData *cmd=&mystruct;
+//#include "cmdstructure.h"
+	//CmdData mystruct;
+	//CmdData *cmd=&mystruct;
 	
 int main()
 	{

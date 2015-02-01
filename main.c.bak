@@ -2,8 +2,8 @@
 #include "color_control.h"
 #include "usart.h"
 #include "cmdstructure.h"
-	CmdData mystruct;
-	CmdData *cmd=&mystruct;
+	//CmdData mystruct;
+	//CmdData *cmd=&mystruct;
 	
 int main()
 	{
@@ -28,10 +28,10 @@ int main()
 	GPIOA->ODR &= ~GPIO_ODR_ODR_2;*/
 
 while(1)
-	{
-	//Color_SetB(cmd->b);
+		{
+		//Color_SetB(cmd->b);
+		}
 	}
-}
 
 
 /*void TIM2_IRQHandler()//Функция обработчика прерывания от таймера 2
