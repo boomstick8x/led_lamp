@@ -9,9 +9,9 @@ uint8_t ArrI=0;
 	
 void ExecuteCommand()
 	{
-		Color_SetR(LampCmdStructure.CmdData.r);
-		Color_SetG(LampCmdStructure.CmdData.g);
-		Color_SetB(LampCmdStructure.CmdData.b);
+		Color_SetR(*RED);
+		Color_SetG(*GREEN);
+		Color_SetB(*BLUE);
 	}
 void Usart_Parsing(void)
 	{	
@@ -24,7 +24,7 @@ void Usart_Parsing(void)
 				p=strtok(NULL, ",");
 				LampCmdStructure.CmdStructArr[++i]=atoi(p);				
 			}
-		ExecuteCommand();
+		ExecuteCommand();			
 	}
 
 void Data_Received(char data)
