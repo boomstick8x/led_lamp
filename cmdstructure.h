@@ -5,7 +5,7 @@
 	{
 		struct _CmdData
 			{uint8_t R, G, B;} CmdData;
-			uint8_t CmdStructArr[3];	
+			uint8_t CmdStructArr[2];	
 	} CmdStructure;
 	CmdStructure LampCmdStructure;
 	uint8_t *RED = &LampCmdStructure.CmdData.R;

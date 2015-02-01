@@ -24,8 +24,7 @@ void Usart_Parsing(void)
 				p=strtok(NULL, ",");
 				LampCmdStructure.CmdStructArr[++i]=atoi(p);				
 			}
-		ExecuteCommand();
-			
+		ExecuteCommand();			
 	}
 
 void Data_Received(char data)

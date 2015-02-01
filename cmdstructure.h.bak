@@ -3,9 +3,8 @@
 #define Cmd_Structure_Guard
 	typedef union _CmdStructure
 	{
-		//#pragma anon_unions
 		struct _CmdData
-			{uint8_t R, G, B;}CmdData;
+			{uint8_t R, G, B;} CmdData;
 			uint8_t CmdStructArr[3];	
 	} CmdStructure;
 	CmdStructure LampCmdStructure;
