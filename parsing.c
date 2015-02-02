@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include "cmdstructure.h"
 #include "color_control.h"
-char CmdDataArray[100];
+char CmdDataArray[10];
 uint8_t ArrI=0;
 	
 void ExecuteCommand()

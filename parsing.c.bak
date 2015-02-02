@@ -1,4 +1,3 @@
-#include <stm32l1xx.h>
 #include <string.h>
 #include <stdint.h>
 #include <cstdlib>
