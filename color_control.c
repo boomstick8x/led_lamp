@@ -1,5 +1,4 @@
 #include <stm32l1xx.h>
-void PWM_Init(void);
 
 void PWM_Init()
 	{

@@ -2,7 +2,7 @@
 
 void (*CallBackPtr)(char);//возвращает void, передаёт char
 
-void USART_SetCallBackPtr(void* CBPtr)//принимаем указатель на начала Data_Received
+void USART_SetCallBackPtr(void *CBPtr)//принимаем указатель на начала Data_Received
 	{
 		CallBackPtr=CBPtr;//объявляем и инициализируем указатель на функцию
 	}
@@ -53,8 +53,8 @@ void USART1_IRQHandler(void)
 		{
 			GPIOB->ODR ^= GPIO_ODR_ODR_7;
 			//Data_Received(USART1->DR);
-			if (CallBackPtr!=0)
-				CallBackPtr (USART1->DR);		
+			if (CallBackPtr)
+				(*CallBackPtr)(USART1->DR);		
 		}
 	}
 

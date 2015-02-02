@@ -10,7 +10,7 @@ int main()
 		Color_SetG(0);
 		Color_SetB(0);
 		USART_Init();
-		USART_SetCallBackPtr((void* )Data_Received);
+		USART_SetCallBackPtr((void*)Data_Received);
 	
 		RCC->AHBENR |= RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOAEN;;
 		GPIOB->MODER |= GPIO_MODER_MODER7_0 | GPIO_MODER_MODER6_0;
