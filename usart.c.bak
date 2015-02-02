@@ -1,9 +1,8 @@
 #include <stm32l1xx.h>
-//#include "parsing.h"
 
-void (*CallBackPtr)(char);//тип передаваемых параметров char
+void (*CallBackPtr)(char);//возвращает void, передаёт char
 
-void USART_SetCallBackPtr(void* CBPtr)//принимаем указатель на начала Data_Received
+void USART_SetCallBackPtr(void* CBPtr)//принимаем указатель на начала Data_Received//ПОЧЕМУ VOID?
 	{
 		CallBackPtr=CBPtr;//объявляем и инициализируем указатель на функцию
 	}
