@@ -1,10 +1,10 @@
 #include <stm32l1xx.h>
 
-void (*CallBackPtr)(char);//возвращает void, передаёт char
+void (*CallBack_Data_Received)(char);//возвращает void, передаёт char
 
-void USART_SetCallBackPtr(void *CBPtr)//принимаем указатель на начала Data_Received
+void USART_SetCB_Data_Received_Ptr(void (*CBPtr)(char))//принимаем указатель на начала Data_Received
 	{
-		CallBackPtr=CBPtr;//объявляем и инициализируем указатель на функцию
+		CallBack_Data_Received=CBPtr;//объявляем и инициализируем указатель на функцию
 	}
 	
 void Usart_SendChar(char data)
@@ -13,7 +13,7 @@ void Usart_SendChar(char data)
 		USART1->DR=(data);
 	}
 	
-void Usart_SendString(char* data)
+void Usart_SendString(char *data)
 	{
 		while(*data)
 		{
@@ -44,7 +44,8 @@ void USART_Init()
 		USART1 -> BRR = 0x683; //9600 baud rate 0x683
 		USART1 -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE ;//| USART_CR1_TXEIE;//enable: recive, transimt, USART, Interrupt Read Data not empty
 		//	USART1 -> CR1  |= USART_CR1_RE | USART_CR1_RXNEIE | USART_CR1_UE ;//enable: recive, IRQ Data not empty, USART	
-		Usart_SendString("USART1 ready\n\r");	
+		Usart_SendString("USART1 ready\n\r");
+		
 	}
 
 void USART1_IRQHandler(void)
@@ -52,54 +53,8 @@ void USART1_IRQHandler(void)
 		if (USART1->SR & USART_SR_RXNE)//Rx register not empty
 		{
 			GPIOB->ODR ^= GPIO_ODR_ODR_7;
-			//Data_Received(USART1->DR);
-			if (CallBackPtr)
-				(*CallBackPtr)(USART1->DR);		
+			if (CallBack_Data_Received)
+				(*CallBack_Data_Received)(USART1->DR);		
 		}
 	}
 
-
-/*AT Command ends with “\r\n”
-AT
-	:OK
-
-AT+CWMODE=1//station mode
-	:OK
-
-AT+CWJAP="kaa","19562876"
-	:OK
-
-AT+CIFSR//IP
-	:+CIFSR:STAIP,"192.168.0.5"
-	:+CIFSR:STAMAC,"18:fe:34:9d:f9:1c"
-
-AT+CIPMODE=0//full duplex transmisson mode
-	:OK
-
-AT+CIPMUX=0//single connection mode
-	:OK
-
-AT+CIPSERVER=1,8888//start server on 8888 port
-	:OK
-	
-AT+CIPSTATUS
-	:STATUS:4//diconected
-	:OK
-	or
-	:STATUS:3//conected
-	:+CIPSTATUS:0,"TCP","192.168.0.2",51738,1//0- id, type, ip, port, server(1) or client(0)
-	:OK
-
-sending from PC:
-after connect: CONNECT
-		:+IPD,4:test	//+IPD,<length>:<data>
-		:OK
-		:+IPD,0,2:
-		:OK
-
-sending from ESP:
-AT+CIPSEND=4		//char number
-> test					//without enter
-	:SEND OK
-
-*/

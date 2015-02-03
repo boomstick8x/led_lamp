@@ -10,8 +10,8 @@ int main()
 		Color_SetG(0);
 		Color_SetB(0);
 		USART_Init();
-		void (*testptr)(char)=Data_Received;
-		USART_SetCallBackPtr(testptr);
+		USART_SetCB_Data_Received_Ptr(Data_Received);
+		ESP8266_Init();
 	
 		RCC->AHBENR |= RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOAEN;;
 		GPIOB->MODER |= GPIO_MODER_MODER7_0 | GPIO_MODER_MODER6_0;

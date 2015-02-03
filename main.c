@@ -2,6 +2,7 @@
 #include "color_control.h"
 #include "usart.h"
 #include "parsing.h"
+#include "esp_init.h"
 
 int main()
 	{
@@ -10,7 +11,8 @@ int main()
 		Color_SetG(0);
 		Color_SetB(0);
 		USART_Init();
-		USART_SetCallBackPtr((void*)Data_Received);
+		USART_SetCB_Data_Received_Ptr(Data_Received);
+		ESP_Init("start");
 	
 		RCC->AHBENR |= RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOAEN;;
 		GPIOB->MODER |= GPIO_MODER_MODER7_0 | GPIO_MODER_MODER6_0;

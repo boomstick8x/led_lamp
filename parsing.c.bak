@@ -1,10 +1,13 @@
 #include <string.h>
 #include <stdint.h>
 #include <cstdlib>
+#include "parsing.h"
 #include "cmdstructure.h"
 #include "color_control.h"
-char CmdDataArray[100];
+#include "esp_init.h"
+char CmdDataArray[10];
 uint8_t ArrI=0;
+
 	
 void ExecuteCommand()
 	{
@@ -12,10 +15,14 @@ void ExecuteCommand()
 		Color_SetG(*GREEN);
 		Color_SetB(*BLUE);
 	}
-void Usart_Parsing(void)
+void Usart_Parsing()
 	{	
+		if(strncmp(CmdDataArray, "OK",2)==0)
+			{
+				ESP_Init(CmdDataArray);
+				Usart_SendString("ESP8266 initialization script running...\n\r");
+			}
 		char *p=strtok(CmdDataArray, ",");
-		//CmdDataArray[0]=atoi(p);
 		LampCmdStructure.CmdStructArr[0]=atoi(p);//array to structure cycle
 		uint8_t i=0;
 		while(p)

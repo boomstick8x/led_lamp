@@ -1,5 +1,4 @@
 void USART_Init(void);
 void Usart_SendChar(char);
-void Usart_SendString(char);
-void USART_SetCallBackPtr(void *);
-
+void Usart_SendString(char *);
+void USART_SetCB_DataReceived_Ptr(void *);

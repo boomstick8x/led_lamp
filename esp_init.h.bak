@@ -1,0 +1,2 @@
+void ESP8266_Init();
+void ESP_Init(void *);
