@@ -20,7 +20,7 @@ void Usart_Parsing()
 		uint8_t i=0;
 		while(i<ArrI)
 			{
-				if(CmdDataArray[i]=='O')
+				if(CmdDataArray[i]=='O' && CmdDataArray[++i]=='K')
 						ESP_Init(CmdDataArray);
 				i++;
 			}

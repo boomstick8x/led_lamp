@@ -11,8 +11,10 @@ void ESP_Init(char *CmdDataArrayPtr)
 		char *ESP_Init_Array[]={initstring1, initstring2, initstring3};
 
 		if(strcmp(CmdDataArrayPtr, "start")==0)
+			{
 			Usart_SendString("Starting ESP8266 initialization...\n\r");
-		return;
+			return;
+			}
 		//if(strcmp(CmdDataArrayPtr, "OK\0")==0)
 			//{
 				Usart_SendString(ESP_Init_Array[N]);

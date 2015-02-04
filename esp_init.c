@@ -12,14 +12,11 @@ void ESP_Init(char *CmdDataArrayPtr)
 
 		if(strcmp(CmdDataArrayPtr, "start")==0)
 			{
-			Usart_SendString("Starting ESP8266 initialization...\n\r");
-			return;
+				Usart_SendString("Starting ESP8266 initialization...\n\r");
+				return;
 			}
-		//if(strcmp(CmdDataArrayPtr, "OK\0")==0)
-			//{
-				Usart_SendString(ESP_Init_Array[N]);
-				N++;
-			//}
+		Usart_SendString(ESP_Init_Array[N]);
+		N++;
 		if(N==4)
 			Usart_SendString("ESP8266 online...");
 	}

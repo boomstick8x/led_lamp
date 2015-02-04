@@ -8,7 +8,6 @@
 char CmdDataArray[100];
 uint8_t ArrI=0;
 
-	
 void ExecuteCommand()
 	{
 		Color_SetR(*RED);
@@ -20,12 +19,14 @@ void Usart_Parsing()
 		uint8_t i=0;
 		while(i<ArrI)
 			{
-				if(CmdDataArray[i]=='O'&&CmdDataArray[i+1]=='K')
+				if(CmdDataArray[i]=='O' && CmdDataArray[++i]=='K')
+					{
 						ESP_Init(CmdDataArray);
+						return;
+					}
 				i++;
 			}
 		i=0;
-		ArrI=0;
 		char *p=strtok(CmdDataArray, ",");
 		LampCmdStructure.CmdStructArr[0]=atoi(p);//array to structure cycle
 		while(p)
