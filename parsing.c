@@ -5,7 +5,7 @@
 #include "cmdstructure.h"
 #include "color_control.h"
 #include "esp_init.h"
-char CmdDataArray[10];
+char CmdDataArray[100];
 uint8_t ArrI=0;
 
 	
@@ -16,14 +16,18 @@ void ExecuteCommand()
 		Color_SetB(*BLUE);
 	}
 void Usart_Parsing()
-	{	
-		if(strncmp(CmdDataArray, "OK",2)==0)
+	{
+		uint8_t i=0;
+		while(i<ArrI)
 			{
-				ESP_Init(CmdDataArray);
+				if(CmdDataArray[i]=='O'&&CmdDataArray[i+1]=='K')
+						ESP_Init(CmdDataArray);
+				i++;
 			}
+		i=0;
+		ArrI=0;
 		char *p=strtok(CmdDataArray, ",");
 		LampCmdStructure.CmdStructArr[0]=atoi(p);//array to structure cycle
-		uint8_t i=0;
 		while(p)
 			{	
 				p=strtok(NULL, ",");
@@ -37,8 +41,8 @@ void Data_Received(char data)
 		if(data==0x0D)
 			{
 			CmdDataArray[ArrI]=0;
-			ArrI=0;
 			Usart_Parsing();
+			ArrI=0;
 			}
 		else
 			{
