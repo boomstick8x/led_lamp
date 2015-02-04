@@ -7,10 +7,11 @@ void USART_SetCB_Data_Received_Ptr(void (*CBPtr)(char))//принимаем ук
 		CallBack_Data_Received=CBPtr;//объявляем и инициализируем указатель на функцию
 	}
 	
-void USART1_SendChar(char data)
+void USART1_SendChar(char tx_data)
 	{
 		while(!(USART1->SR & USART_SR_TC));//Проверка завершения передачи предыдущих данных
-		USART1->DR=(data);
+		USART1->DR=tx_data;
+		USART3->DR=tx_data;
 	}
 	
 void USART1_SendString(char *data)
@@ -29,6 +30,7 @@ void USART_Init(uint8_t x)
 		switch (x)
 		{
 			case 1:
+				RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;
 				NVIC_EnableIRQ (USART1_IRQn);
 				USARTX=  ((USART_TypeDef *) USART1);
 				break;
@@ -37,19 +39,15 @@ void USART_Init(uint8_t x)
 				USARTX=  ((USART_TypeDef *) USART2);
 				break;
 			case 3:
+				RCC -> APB1ENR |= RCC_APB1ENR_USART3EN;
 				NVIC_EnableIRQ (USART3_IRQn);
 				USARTX=  ((USART_TypeDef *) USART3);
 				break;
 		}
-		//--usart1 part
-		RCC -> APB2ENR |= RCC_APB2ENR_USART1EN;
 		USARTX -> BRR = 0x683; //9600 baud rate 0x683
 		//enable: recive, transimt, USART, DR not empty Interrupt
 		USARTX -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE ;//| USART_CR1_TXEIE;прерывание по опустошению
 		USART1_SendString("USART1 ready\n\r");
-		//--usart3 part
-		RCC -> APB1ENR |= RCC_APB1ENR_USART3EN;
-	
 	}
 
 void USART1_IRQHandler(void)
@@ -57,8 +55,10 @@ void USART1_IRQHandler(void)
 		if (USART1->SR & USART_SR_RXNE)//Rx register not empty
 		{
 			GPIOB->ODR ^= GPIO_ODR_ODR_7;
+			char rx_data=USART1->DR;
+			USART3->DR=rx_data;
 			if (CallBack_Data_Received)
-				(*CallBack_Data_Received)(USART1->DR);		
+				(*CallBack_Data_Received)(rx_data);
 		}
 	}
 	
