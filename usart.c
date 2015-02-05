@@ -47,7 +47,7 @@ void USART_Init(uint8_t x)
 		USARTX -> BRR = 0x683; //9600 baud rate 0x683
 		//enable: recive, transimt, USART, DR not empty Interrupt
 		USARTX -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE ;//| USART_CR1_TXEIE;прерывание по опустошению
-		USART1_SendString("USART1 ready\n\r");
+		//USART1_SendString("USART1 ready\n\r");
 	}
 
 void USART1_IRQHandler(void)
@@ -66,7 +66,7 @@ void USART1_IRQHandler(void)
 void USART3_IRQHandler(void)
 	{
 		GPIOB->ODR ^= GPIO_ODR_ODR_6;
-		if (USART3->SR & USART_SR_RXNE)//Rx register not empty
+		//if (USART3->SR & USART_SR_RXNE)//Rx register not empty
 			while(!(USART3->SR & USART_SR_TC));
 			USART3->DR=USART3->DR;
 	}

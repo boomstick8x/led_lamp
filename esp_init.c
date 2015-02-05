@@ -1,24 +1,40 @@
 #include <string.h>
 #include <stdint.h>
 #include "usart.h"
-uint8_t N=0;
+uint8_t N=1;
 
-void ESP_Init(char *CmdDataArrayPtr)
+void ESP_Init()
 	{
-		char *initstring1="AT+CWMODE=1//station mode\n\r";
-		char *initstring2="AT+CIPMODE=0//full duplex transmisson mode\n\r";
-		char *initstring3="AT+CIPMUX=0//single connection mode\n\r";
-		char *ESP_Init_Array[]={initstring1, initstring2, initstring3};
-
-		if(strcmp(CmdDataArrayPtr, "start")==0)
-			{
-				USART1_SendString("Starting ESP8266 initialization...\n\r");
-				return;
-			}
+		char *initstring1="AT";
+		char *initstring2="AT+CWMODE=1";
+		char *initstring3="AT+CWJAP=\"kaa\",\"19562876\" ";
+		char *initstring4="AT+CIFSR";
+		char *initstring5="AT+CIPMODE=0";
+		char *initstring6="AT+CIPMUX=1";
+		char *initstring7="AT+CIPSERVER=1,8888";	
+		char *initstring8="AT+CIPSTATUS";	
+		char *ESP_Init_Array[]={initstring1, initstring2, initstring3, initstring4, initstring5, initstring6, initstring7, initstring8};
+		if(N>7)
+			return;
 		USART1_SendString(ESP_Init_Array[N]);
 		N++;
-		if(N==4)
-			USART1_SendString("ESP8266 online...");
+		for(uint32_t i; i<30000; i++);
+		
+		
+		
+		/*
+		
+		while(i<ArrI)
+			{
+				if(CmdDataArray[i]=='O' && CmdDataArray[++i]=='K')
+					{
+						ESP_Init(CmdDataArray);
+						return;
+					}
+				i++;
+			}
+		i=0;
+*/		
 	}
 	
 

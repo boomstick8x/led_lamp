@@ -17,16 +17,6 @@ void ExecuteCommand()
 void Usart_Parsing()
 	{
 		uint8_t i=0;
-		while(i<ArrI)
-			{
-				if(CmdDataArray[i]=='O' && CmdDataArray[++i]=='K')
-					{
-						ESP_Init(CmdDataArray);
-						return;
-					}
-				i++;
-			}
-		i=0;
 		char *p=strtok(CmdDataArray, ",");
 		LampCmdStructure.CmdStructArr[0]=atoi(p);//array to structure cycle
 		while(p)
@@ -39,15 +29,21 @@ void Usart_Parsing()
 
 void Data_Received(char data)
 	{
-		if(data==0x0D)
+		if(data==0x0D && CmdDataArray[0]=='+')//НЕ РАБОТАЕТ, НАДО ПОДУМАТЬ НАД ПРИЁМОМ СООБЩЕНИЙ
 			{
-			CmdDataArray[ArrI]=0;
-			Usart_Parsing();
-			ArrI=0;
+				CmdDataArray[ArrI]=0;
+				Usart_Parsing();
+				ArrI=0;
 			}
+			if(data==0x0D && CmdDataArray[--ArrI]=='K')//ПРОВЕРКА НА ОК ДЛЯ СКРИПТА ИНИЦИАЛИЗАЦИИ
+		{
+					ESP_Init();
+					return;			
+		}
 		else
 			{
 			CmdDataArray[ArrI]=data;
 			ArrI++;
 			}
+			
 	}

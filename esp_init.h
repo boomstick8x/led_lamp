@@ -1,1 +1,1 @@
-void ESP_Init(void *);
+void ESP_Init(void);

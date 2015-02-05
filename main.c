@@ -25,7 +25,7 @@ int main()
 		USART_Init(1);
 		USART_Init(3);
 		USART_SetCB_Data_Received_Ptr(Data_Received);
-		ESP_Init("start");
+		ESP_Init();
 
 	/*GPIOA->MODER |= GPIO_MODER_MODER2_0;
 	GPIOA->OTYPER &= ~GPIO_OTYPER_OT_2;
