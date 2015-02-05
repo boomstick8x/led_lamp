@@ -5,6 +5,7 @@
 #include "cmdstructure.h"
 #include "color_control.h"
 #include "esp_init.h"
+#include "usart.h"
 char CmdDataArray[100];
 uint8_t ArrI=0;
 
@@ -17,9 +18,14 @@ void ExecuteCommand()
 void Usart_Parsing()
 	{
 		uint8_t i=0;
-		char *p=strtok(CmdDataArray, ",");
+		char TestArray[20];
+		for(;i<13;i++)
+		TestArray[i]=CmdDataArray[ArrI-11+i];
+		
+		i=0;
+		char *p=strtok(TestArray, ",");
 		LampCmdStructure.CmdStructArr[0]=atoi(p);//array to structure cycle
-		while(p)
+		while(i<2)
 			{	
 				p=strtok(NULL, ",");
 				LampCmdStructure.CmdStructArr[++i]=atoi(p);				
@@ -29,7 +35,8 @@ void Usart_Parsing()
 
 void Data_Received(char data)
 	{
-		if(data==0x0D && CmdDataArray[0]=='+')//НЕ РАБОТАЕТ, НАДО ПОДУМАТЬ НАД ПРИЁМОМ СООБЩЕНИЙ
+		
+		if(data==0x0D && CmdDataArray[ArrI-12]==':')
 			{
 				CmdDataArray[ArrI]=0;
 				Usart_Parsing();
@@ -44,6 +51,9 @@ void Data_Received(char data)
 			{
 			CmdDataArray[ArrI]=data;
 			ArrI++;
+				
 			}
+					if(data=='+')
+			ArrI=0;
 			
 	}

@@ -9,7 +9,7 @@ void ESP_Init()
 		char *initstring2="AT+CWMODE=1";
 		char *initstring3="AT+CWJAP=\"kaa\",\"19562876\" ";
 		char *initstring4="AT+CIFSR";
-		char *initstring5="AT+CIPMODE=1";
+		char *initstring5="AT+CIPMODE=0";
 		char *initstring6="AT+CIPMUX=1";
 		char *initstring7="AT+CIPSERVER=1,8888";	
 		char *initstring8="AT+CIPSTATUS";	
@@ -18,23 +18,8 @@ void ESP_Init()
 			return;
 		USART1_SendString(ESP_Init_Array[N]);
 		N++;
-		for(uint32_t i; i<30000; i++);
 		
 		
-		
-		/*
-		
-		while(i<ArrI)
-			{
-				if(CmdDataArray[i]=='O' && CmdDataArray[++i]=='K')
-					{
-						ESP_Init(CmdDataArray);
-						return;
-					}
-				i++;
-			}
-		i=0;
-*/		
 	}
 	
 

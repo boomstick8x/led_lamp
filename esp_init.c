@@ -21,20 +21,6 @@ void ESP_Init()
 		for(uint32_t i; i<30000; i++);
 		
 		
-		
-		/*
-		
-		while(i<ArrI)
-			{
-				if(CmdDataArray[i]=='O' && CmdDataArray[++i]=='K')
-					{
-						ESP_Init(CmdDataArray);
-						return;
-					}
-				i++;
-			}
-		i=0;
-*/		
 	}
 	
 
