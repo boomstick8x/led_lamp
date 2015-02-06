@@ -7,6 +7,7 @@
 #include "esp_init.h"
 #include "usart.h"
 #include "timers.h"
+
 char CmdDataArray[100];
 uint8_t ArrI=0;
 
@@ -18,44 +19,28 @@ void ExecuteCommand()
 	}
 void Usart_Parsing()
 	{
-		uint8_t i=0;
-		char TestArray[20];
-		for(;i<13;i++)
-		TestArray[i]=CmdDataArray[ArrI-11+i];
-		
-		i=0;
-		char *p=strtok(TestArray, ",");
-		LampCmdStructure.CmdStructArr[0]=atoi(p);//array to structure cycle
-		while(i<2)
-			{	
-				p=strtok(NULL, ",");
-				LampCmdStructure.CmdStructArr[++i]=atoi(p);				
+		if(strcmp(CmdDataArray,"ready")==0)
+		{
+			for(uint8_t i=0; i<8; i++){
+			ESP_Init("init");
 			}
-		ExecuteCommand();			
+		}
+
 	}
 
 void Data_Received(char data)
 	{
 		
-		if(data==0x0D && CmdDataArray[ArrI-12]==':')
+		if(data==0x0A && CmdDataArray[ArrI-1]==0x0D)
 			{
-				CmdDataArray[ArrI]=0;
+				CmdDataArray[ArrI-1]=0;	
 				Usart_Parsing();
 				ArrI=0;
-			}
-			
-			if(data==0x0D && CmdDataArray[ArrI]=='y')//ПРОВЕРКА НА ОК ДЛЯ СКРИПТА ИНИЦИАЛИЗАЦИИ
-				{		
-					ESP_Init("init");
-					return;			
-					}
+			CmdDataArray[0]=0;
+			}		
 		else
-			{
-			CmdDataArray[ArrI]=data;
-			ArrI++;
-				
-			}
-					if(data=='+')
-			ArrI=0;
-			
+		{
+		CmdDataArray[ArrI]=data;
+		ArrI++;
+		}
 	}

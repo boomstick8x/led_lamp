@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include "usart.h"
 #include "timers.h"
-//#include <stm32l1xx.h>
+
 uint8_t N=0;
 
 void ESP_Init(char *cmd)
@@ -25,13 +25,14 @@ void ESP_Init(char *cmd)
 			N++;
 			return;
 			}
+							for(uint32_t i=0;i<10000;i++);
 			if (strcmp(cmd,"init"))
-			{
-				Delay_sec(1);
+				{
+
 				USART1_SendString(ESP_Init_Array[N]);
-				N++;
-				return;
-			}
+				
+				N++;				
+				}
 		
 	}
 	

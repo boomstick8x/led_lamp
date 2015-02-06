@@ -2,13 +2,13 @@
 #include <stdint.h>
 #include "usart.h"
 #include "timers.h"
-//#include <stm32l1xx.h>
+
 uint8_t N=0;
 
 void ESP_Init(char *cmd)
 	{
 		char *initstring1="AT+RST";
-		char *initstring1_="";
+		//char *initstring1_="";
 		char *initstring2="AT+CWMODE=1";
 		char *initstring3="AT+CWJAP=\"kaa\",\"19562876\" ";
 		char *initstring4="AT+CIFSR";
@@ -26,12 +26,12 @@ void ESP_Init(char *cmd)
 			return;
 			}
 			if (strcmp(cmd,"init"))
-			{
-				Delay_sec(1);
+				{
+				for(uint32_t i=0;i<10000;i++);
 				USART1_SendString(ESP_Init_Array[N]);
+				
 				N++;
-				return;
-			}
+				}
 		
 	}
 	
