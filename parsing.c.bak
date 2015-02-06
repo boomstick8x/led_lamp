@@ -19,26 +19,21 @@ void ExecuteCommand()
 	}
 void Usart_Parsing()
 	{
-		if(strcmp(CmdDataArray,"ready")==0)
-		{
-			for(uint8_t i=0; i<8; i++){
-			ESP_Init("init");
-			}
-		}
-
+	if(strcmp(CmdDataArray,"ready")==0 || strcmp(CmdDataArray,"OK")==0){
+		ESP_Init("init");
+		USART1_SendString("\n");	}
 	}
 
 void Data_Received(char data)
 	{
-		
-		if(data==0x0A && CmdDataArray[ArrI-1]==0x0D)
-			{
-				CmdDataArray[ArrI-1]=0;	
-				Usart_Parsing();
-				ArrI=0;
-			CmdDataArray[0]=0;
-			}		
-		else
+	if(data==0x0A && CmdDataArray[ArrI-1]==0x0D)//CR-LF(0x0D-0x0A)
+		{
+		CmdDataArray[ArrI-1]=0;	
+		Usart_Parsing();
+		ArrI=0;
+		CmdDataArray[0]=0;
+		}		
+	else
 		{
 		CmdDataArray[ArrI]=data;
 		ArrI++;

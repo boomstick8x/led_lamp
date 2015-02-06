@@ -8,7 +8,7 @@ uint8_t N=0;
 void ESP_Init(char *cmd)
 	{
 		char *initstring1="AT+RST";
-		//char *initstring1_="";
+		char *initstring1_="";
 		char *initstring2="AT+CWMODE=1";
 		char *initstring3="AT+CWJAP=\"kaa\",\"19562876\" ";
 		char *initstring4="AT+CIFSR";
@@ -16,7 +16,7 @@ void ESP_Init(char *cmd)
 		char *initstring6="AT+CIPMUX=1";
 		char *initstring7="AT+CIPSERVER=1,8888";	
 		char *initstring8="AT+CIPSTATUS";	
-		char *ESP_Init_Array[]={initstring1, initstring2, initstring3, initstring4, initstring5, initstring6, initstring7, initstring8};
+		char *ESP_Init_Array[]={initstring1, initstring1_, initstring2, initstring3, initstring4, initstring5, initstring6, initstring7, initstring8};
 		if(N>8)
 			return;
 		if (strcmp(cmd,"start"))
@@ -25,12 +25,10 @@ void ESP_Init(char *cmd)
 			N++;
 			return;
 			}
-							for(uint32_t i=0;i<10000;i++);
 			if (strcmp(cmd,"init"))
 				{
-
+			Delay_sec(5);
 				USART1_SendString(ESP_Init_Array[N]);
-				
 				N++;				
 				}
 		
