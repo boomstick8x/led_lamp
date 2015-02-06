@@ -19,13 +19,20 @@ void ExecuteCommand()
 	}
 void Usart_Parsing()
 	{
-	if(strcmp(CmdDataArray,"ready")==0 || strcmp(CmdDataArray,"OK")==0){
+	if(strcmp(CmdDataArray,"ready")==0 || strcmp(CmdDataArray,"OK")==0)
+		{
 		ESP_Init("init");
-		USART1_SendString("\n");	}
+		USART1_SendChar(0x0A);
+		}
 	}
 
 void Data_Received(char data)
 	{
+		if(data==0x0A && CmdDataArray[1]=='I')
+		{
+		Color_SetB(10);//working!
+		}
+		
 	if(data==0x0A && CmdDataArray[ArrI-1]==0x0D)//CR-LF(0x0D-0x0A)
 		{
 		CmdDataArray[ArrI-1]=0;	
