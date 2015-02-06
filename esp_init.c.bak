@@ -17,7 +17,7 @@ void ESP_Init(char *cmd)
 		char *initstring7="AT+CIPSERVER=1,8888";	
 		char *initstring8="AT+CIPSTATUS";	
 		char *ESP_Init_Array[]={initstring1, initstring1_, initstring2, initstring3, initstring4, initstring5, initstring6, initstring7, initstring8};
-		if(N>7)
+		if(N>8)
 			return;
 		if (strcmp(cmd,"start"))
 			{

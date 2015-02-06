@@ -27,7 +27,7 @@ int main()
 		USART_Init(3);
 		USART_SetCB_Data_Received_Ptr(Data_Received);
 		TIM6_Init();
-		ESP_Init("reset");
+	//	ESP_Init("reset");
 
 	/*GPIOA->MODER |= GPIO_MODER_MODER2_0;
 	GPIOA->OTYPER &= ~GPIO_OTYPER_OT_2;
