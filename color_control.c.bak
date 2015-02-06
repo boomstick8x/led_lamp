@@ -18,9 +18,6 @@ void PWM_Init()
 		TIM2->CCMR1 |= 0x6000;//PWM mode 1 for channel 2
 		TIM2->ARR = 255;//auto reload value
 		TIM2->CR1 |= TIM_CR1_CEN;//Enable counter
-		TIM2->CCR3 = 1;//GREEN Duty cycle
-		TIM2->CCR2 = 1;//RED Duty cycle
-		TIM2->CCR4 = 1;//BLUE Duty cycle
 	//TIM2->DIER |= TIM_DIER_UIE;//interrupt enable
 	//NVIC_SetPriority(TIM2_IRQn, 1); //Приоритет прерывания
 	//NVIC_EnableIRQ(TIM2_IRQn); //Разрешаем обработку прерывания от таймера 2	

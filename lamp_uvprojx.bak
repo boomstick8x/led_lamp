@@ -424,14 +424,14 @@
               <FilePath>.\usart.c</FilePath>
             </File>
             <File>
-              <FileName>test.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\test.c</FilePath>
-            </File>
-            <File>
               <FileName>parsing.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\parsing.c</FilePath>
+            </File>
+            <File>
+              <FileName>esp_init.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\esp_init.c</FilePath>
             </File>
           </Files>
         </Group>

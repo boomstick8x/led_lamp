@@ -1,5 +1,5 @@
 #include <stm32l1xx.h>
-
+#include "timers.h"
 void (*CallBack_Data_Received)(char);//возвращает void, передаёт char
 
 void USART_SetCB_Data_Received_Ptr(void (*CBPtr)(char))//принимаем указатель на начала Data_Received
@@ -11,6 +11,7 @@ void USART1_SendChar(char tx_data)
 	{
 		while(!(USART1->SR & USART_SR_TC));//Проверка завершения передачи предыдущих данных
 		USART1->DR=tx_data;
+		while(!(USART3->SR & USART_SR_TC));
 		USART3->DR=tx_data;
 	}
 	
@@ -22,6 +23,7 @@ void USART1_SendString(char *data)
 			data++;
 		}
 		USART1_SendChar(0X0D);
+				
 	}
 	
 void USART_Init(uint8_t x)
@@ -67,8 +69,9 @@ void USART3_IRQHandler(void)
 	{
 		GPIOB->ODR ^= GPIO_ODR_ODR_6;
 		//if (USART3->SR & USART_SR_RXNE)//Rx register not empty
-			while(!(USART3->SR & USART_SR_TC));
-			USART3->DR=USART3->DR;
+		while(!(USART3->SR & USART_SR_TC));
+		char rx_data=USART3->DR;
+		USART1->DR=rx_data;
 	}
 	
 	

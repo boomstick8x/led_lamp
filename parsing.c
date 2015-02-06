@@ -6,6 +6,7 @@
 #include "color_control.h"
 #include "esp_init.h"
 #include "usart.h"
+#include "timers.h"
 char CmdDataArray[100];
 uint8_t ArrI=0;
 
@@ -42,11 +43,12 @@ void Data_Received(char data)
 				Usart_Parsing();
 				ArrI=0;
 			}
-			if(data==0x0D && CmdDataArray[--ArrI]=='K')//ПРОВЕРКА НА ОК ДЛЯ СКРИПТА ИНИЦИАЛИЗАЦИИ
-		{
-					ESP_Init();
+			
+			if(data==0x0D && CmdDataArray[ArrI]=='y')//ПРОВЕРКА НА ОК ДЛЯ СКРИПТА ИНИЦИАЛИЗАЦИИ
+				{		
+					ESP_Init("init");
 					return;			
-		}
+					}
 		else
 			{
 			CmdDataArray[ArrI]=data;

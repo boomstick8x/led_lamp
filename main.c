@@ -5,6 +5,7 @@
 #include "parsing.h"
 #include "esp_init.h"
 #include "pins.h"
+#include "timers.h"
 
 int main()
 	{
@@ -25,7 +26,8 @@ int main()
 		USART_Init(1);
 		USART_Init(3);
 		USART_SetCB_Data_Received_Ptr(Data_Received);
-		ESP_Init();
+		TIM6_Init();
+		ESP_Init("reset");
 
 	/*GPIOA->MODER |= GPIO_MODER_MODER2_0;
 	GPIOA->OTYPER &= ~GPIO_OTYPER_OT_2;
@@ -40,11 +42,6 @@ while(1)
 	}
 
 
-/*void TIM2_IRQHandler()//Функция обработчика прерывания от таймера 2
-	{
-	TIM2->SR &= ~ TIM_SR_UIF;//clear update interrupt flag bit
-	GPIOB->ODR ^= GPIO_ODR_ODR_7;//Инвертируем состояние выхода - зажигаем или гасим светодиод
-	//GPIOA->ODR ^= GPIO_ODR_ODR_2;//Инвертируем состояние выхода - зажигаем или гасим светодиод
-	}*/
+
 
 

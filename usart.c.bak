@@ -1,5 +1,5 @@
 #include <stm32l1xx.h>
-
+#include "timers.h"
 void (*CallBack_Data_Received)(char);//возвращает void, передаёт char
 
 void USART_SetCB_Data_Received_Ptr(void (*CBPtr)(char))//принимаем указатель на начала Data_Received
@@ -11,6 +11,7 @@ void USART1_SendChar(char tx_data)
 	{
 		while(!(USART1->SR & USART_SR_TC));//Проверка завершения передачи предыдущих данных
 		USART1->DR=tx_data;
+		while(!(USART3->SR & USART_SR_TC));
 		USART3->DR=tx_data;
 	}
 	
@@ -21,7 +22,9 @@ void USART1_SendString(char *data)
 			USART1_SendChar(*data);
 			data++;
 		}
+		Delay_sec(3);
 		USART1_SendChar(0X0D);
+				
 	}
 	
 void USART_Init(uint8_t x)
@@ -47,7 +50,7 @@ void USART_Init(uint8_t x)
 		USARTX -> BRR = 0x683; //9600 baud rate 0x683
 		//enable: recive, transimt, USART, DR not empty Interrupt
 		USARTX -> CR1  |= USART_CR1_RE | USART_CR1_TE | USART_CR1_RXNEIE | USART_CR1_UE ;//| USART_CR1_TXEIE;прерывание по опустошению
-		USART1_SendString("USART1 ready\n\r");
+		//USART1_SendString("USART1 ready\n\r");
 	}
 
 void USART1_IRQHandler(void)
@@ -67,8 +70,9 @@ void USART3_IRQHandler(void)
 	{
 		GPIOB->ODR ^= GPIO_ODR_ODR_6;
 		//if (USART3->SR & USART_SR_RXNE)//Rx register not empty
-			while(!(USART3->SR & USART_SR_TC));
-			USART3->DR=USART3->DR;
+		while(!(USART3->SR & USART_SR_TC));
+		char rx_data=USART3->DR;
+		USART1->DR=rx_data;
 	}
 	
 	
