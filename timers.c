@@ -1,5 +1,7 @@
 #include <stm32l1xx.h>
 #include "color_control.h"
+#include "blur.h"
+
 
 void TIM6_Init()
 {
@@ -38,26 +40,52 @@ void Delay_msec(uint8_t z)
 }
 
 extern uint8_t *ChangeTime, *R_current, *R_received, *G_current, *G_received, *B_current, *B_received;
-
+extern uint8_t DeltaR, DeltaG, DeltaB;
 void TIM7_IRQHandler(void)
 {
-	TIM7->SR &= ~ TIM_SR_UIF;//clear update interrupt flag bit
-	//TIM7->ARR=*ChangeTime;
-	
-	if(*R_current<*R_received)
-	*R_current=*R_current+((*R_received)-(*R_current))/(*ChangeTime);
-	if(*R_current>*R_received)
-	*R_current=*R_current-((*R_current)-(*R_received))/(*ChangeTime);
-	
-	if(*G_current<*G_received)
-	*G_current=*G_current+((*G_received)-(*G_current))/(*ChangeTime);
-	if(*G_current>*G_received)
-	*G_current=*G_current-((*G_current)-(*G_received))/(*ChangeTime);
-	
-	 if(*B_current<*B_received)
-	*B_current=*B_current+((*B_received)-(*B_current))/(*ChangeTime);
-	if(*B_current>*B_received)
-	*B_current=*B_current-((*B_current)-(*B_received))/(*ChangeTime);
+TIM7->SR &= ~ TIM_SR_UIF;//clear update interrupt flag bit
+if(*R_current<*R_received){
+	if(*R_current+DeltaR>254){
+		*R_current=254;
+		return;}
+	*R_current=*R_current+DeltaR;
+}	
+if(*R_current>*R_received){
+	if(*R_current-DeltaR<0){
+		*R_current=0;
+		return;}
+	*R_current=*R_current-DeltaR;
+}
+
+
+if(*G_current<*G_received){
+	if(*G_current+DeltaB>254){
+		*G_current=254;
+		return;}
+	*G_current=*G_current+DeltaB;
+}	
+if(*G_current>*G_received){
+	if(*G_current-DeltaB<0){
+		*G_current=0;
+		return;}
+	*G_current=*G_current-DeltaB;
+}
+
+
+if(*B_current<*B_received){
+	if(*B_current+DeltaB>254){
+		*B_current=254;
+		return;}
+	*B_current=*B_current+DeltaB;
+}	
+if(*B_current>*B_received){
+	if(*B_current-DeltaB<0){
+		*B_current=0;
+		return;}
+	*B_current=*B_current-DeltaB;
+}
+
+
 
 	Color_SetR(*R_current);
 	Color_SetG(*G_current);
