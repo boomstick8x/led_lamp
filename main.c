@@ -7,6 +7,8 @@
 #include "pins.h"
 #include "timers.h"
 #include "blur.h"
+#include "defaults.h"
+
 extern uint8_t *R_current, *G_current, *B_current;
 
 int main()
@@ -20,29 +22,14 @@ int main()
 		
 		SystemClock_Init();
 		Color_Init();
-		
-		*R_current=1;
-		*G_current=1;
-		*B_current=1;
-		Color_SetR(*R_current);
-		Color_SetG(*G_current);
-		Color_SetB(*B_current);
-
-		
 		GPIO_Init();
 		USART_Init(1);
 		USART_Init(3);
 		USART_SetCB_Data_Received_Ptr(Data_Received);
 		TIM6_Init();
+		TIM7_Init();
+		Defaults();
 	//	ESP_Init("reset");
-		
-
-	/*GPIOA->MODER |= GPIO_MODER_MODER2_0;
-	GPIOA->OTYPER &= ~GPIO_OTYPER_OT_2;
-	GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR2;
-	GPIOA->OSPEEDR |= GPIO_OSPEEDER_OSPEEDR2;
-	GPIOA->ODR |= GPIO_ODR_ODR_2;
-	GPIOA->ODR &= ~GPIO_ODR_ODR_2;*/
 
 while(1)
 		{

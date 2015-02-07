@@ -31,8 +31,8 @@ void Usart_Parsing()
 		{
 		char *colon=memchr(CmdDataArray, ':',10);
 		char *p=strtok(colon+1, ",");
-		LampCmdStructure.CmdStructArr[0]=*p;
-		for(uint8_t i=0;i<3;)
+		LampCmdStructure.CmdStructArr[0]=atoi(p);
+		for(uint8_t i=0;i<5;)
 			{	
 			p=strtok(NULL, ",");
 			LampCmdStructure.CmdStructArr[++i]=atoi(p);	

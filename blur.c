@@ -2,28 +2,28 @@
 #include <stdint.h>
 #include "color_control.h"
 #include "timers.h"
-extern unsigned char *CmdByte;
-extern uint8_t *R_current, *R_received, *G_current, *G_received, *B_current, *B_received;
+extern uint8_t *R_current, *R_received, *G_current, *G_received, *B_current, *B_received, *ChangeTime;
 
 
 void Blur()
 {
-	uint8_t time=1;
-	//if(*CmdByte=='s')
+//	TIM7->ARR=*ChangeTime;
+/*	
 if(*R_current<*R_received)
 	while(*R_current<*R_received)
 	{
-		*R_current=*R_current+time;
+		*R_current=*R_current+1;
 		Color_SetR(*R_current);
-		Delay_msec(1);
+		Delay_msec(*ChangeTime);
 	}
 	
 if(*R_current>*R_received)
 	while(*R_current>*R_received)
 	{
-		*R_current=*R_current-time;
+		*R_current=*R_current-1;
 		Color_SetR(*R_current);
-		Delay_msec(1);
+		Delay_msec(*ChangeTime);
 	}
+	//if(*CmdByte=='s')*/
 }
 
