@@ -1,6 +1,5 @@
 #include <stm32l1xx.h>
 #include "color_control.h"
-#include "blur.h"
 
 void TIM6_Init()
 {
@@ -39,26 +38,26 @@ void Delay_msec(uint8_t z)
 }
 
 extern uint8_t *ChangeTime, *R_current, *R_received, *G_current, *G_received, *B_current, *B_received;
-extern uint8_t DeltaR, DeltaG, DeltaB;
+
 void TIM7_IRQHandler(void)
 {
 	TIM7->SR &= ~ TIM_SR_UIF;//clear update interrupt flag bit
+	//TIM7->ARR=*ChangeTime;
 	
 	if(*R_current<*R_received)
-	*R_current=*R_current+DeltaR;
-	*R_current=*R_current+DeltaR;
+	*R_current=*R_current+((*R_received)-(*R_current))/(*ChangeTime);
 	if(*R_current>*R_received)
-	*R_current=*R_current-DeltaR;
+	*R_current=*R_current-((*R_current)-(*R_received))/(*ChangeTime);
 	
 	if(*G_current<*G_received)
-	*G_current=*G_current+DeltaG;
+	*G_current=*G_current+((*G_received)-(*G_current))/(*ChangeTime);
 	if(*G_current>*G_received)
-	*G_current=*G_current-DeltaG;
+	*G_current=*G_current-((*G_current)-(*G_received))/(*ChangeTime);
 	
 	 if(*B_current<*B_received)
-	*B_current=*B_current+DeltaB;
+	*B_current=*B_current+((*B_received)-(*B_current))/(*ChangeTime);
 	if(*B_current>*B_received)
-	*B_current=*B_current-DeltaB;
+	*B_current=*B_current-((*B_current)-(*B_received))/(*ChangeTime);
 
 	Color_SetR(*R_current);
 	Color_SetG(*G_current);

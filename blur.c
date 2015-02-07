@@ -3,27 +3,27 @@
 #include "color_control.h"
 #include "timers.h"
 extern uint8_t *R_current, *R_received, *G_current, *G_received, *B_current, *B_received, *ChangeTime;
-#include "color_control.h"
-uint8_t DeltaR, DeltaG, DeltaB;
+
 
 void Blur()
 {
-
-	if(*R_current<*R_received)
-	DeltaR=((*R_received)-(*R_current))/(*ChangeTime);
-	if(*R_current>*R_received)
-	DeltaR=((*R_current)-(*R_received))/(*ChangeTime);
+//	TIM7->ARR=*ChangeTime;
+/*	
+if(*R_current<*R_received)
+	while(*R_current<*R_received)
+	{
+		*R_current=*R_current+1;
+		Color_SetR(*R_current);
+		Delay_msec(*ChangeTime);
+	}
 	
-	if(*G_current<*G_received)
-	DeltaG=((*G_received)-(*G_current))/(*ChangeTime);
-	if(*G_current>*G_received)
-	DeltaG=((*G_current)-(*G_received))/(*ChangeTime);
-	
-	if(*B_current<*B_received)
-	DeltaB=((*B_received)-(*B_current))/(*ChangeTime);
-	if(*B_current>*B_received)
-	DeltaB=((*B_current)-(*B_received))/(*ChangeTime);
-	
-	
+if(*R_current>*R_received)
+	while(*R_current>*R_received)
+	{
+		*R_current=*R_current-1;
+		Color_SetR(*R_current);
+		Delay_msec(*ChangeTime);
+	}
+	//if(*CmdByte=='s')*/
 }
 
