@@ -16,21 +16,20 @@ void TIM6_Init()
 		
 void TIM6_IRQHandler(void)
 {
-	TIM6->ARR=5000;
-		TIM6->EGR|=TIM_EGR_UG;
-		TIM6->SR &= ~ TIM_SR_UIF;
-	
+	TIM6->SR &= ~ TIM_SR_UIF;//clear update interrupt flag bit
 	GPIOB->ODR ^= GPIO_ODR_ODR_6;
 	
 }
 
-void Delay_sec(uint8_t z)
+void Delay_msec(uint8_t z)
 	{
-		
+		TIM6->ARR=z*100;
+		TIM6->EGR|=TIM_EGR_UG;
+		TIM6->SR &= ~ TIM_SR_UIF;
 		TIM6->CR1 |= TIM_CR1_OPM | TIM_CR1_CEN;
-		
-		
-		
+		while(!(TIM6->SR & TIM_SR_UIF));                          // Дождаться конца задержки
+		TIM6->SR &= ~TIM_SR_UIF;      
+			
 		
 	}
-	
+

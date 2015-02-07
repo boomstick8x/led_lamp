@@ -15,7 +15,7 @@ if(*R_current<*R_received)
 	{
 		*R_current=*R_current+time;
 		Color_SetR(*R_current);
-		Delay_msec(1);
+		//Delay_msec(1);
 	}
 	
 if(*R_current>*R_received)
@@ -23,7 +23,7 @@ if(*R_current>*R_received)
 	{
 		*R_current=*R_current-time;
 		Color_SetR(*R_current);
-		Delay_msec(1);
+		//Delay_msec(1);
 	}
 }
 

@@ -7,15 +7,17 @@
 #include "esp_init.h"
 #include "usart.h"
 #include "timers.h"
+#include "blur.h"
 
 char CmdDataArray[100];
 uint8_t ArrI=0;
 
 void ExecuteCommand()
 	{
-		Color_SetR(*RED);
-		Color_SetG(*GREEN);
-		Color_SetB(*BLUE);
+		//Color_SetR(*RED);
+		//Color_SetG(*GREEN);
+		//Color_SetB(*BLUE);
+		Blur();
 	}
 void Usart_Parsing()
 	{
@@ -29,8 +31,8 @@ void Usart_Parsing()
 		{
 		char *colon=memchr(CmdDataArray, ':',10);
 		char *p=strtok(colon+1, ",");
-		LampCmdStructure.CmdStructArr[0]=atoi(p);
-		for(uint8_t i=0;i<2;)
+		LampCmdStructure.CmdStructArr[0]=*p;
+		for(uint8_t i=0;i<3;)
 			{	
 			p=strtok(NULL, ",");
 			LampCmdStructure.CmdStructArr[++i]=atoi(p);	

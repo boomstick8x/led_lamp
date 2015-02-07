@@ -1,3 +1,3 @@
 #include <stdint.h>
 void TIM6_Init(void);
-void Delay_sec(uint8_t);
+void Delay_msec(uint8_t);

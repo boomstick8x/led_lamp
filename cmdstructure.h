@@ -4,15 +4,23 @@
 	typedef union _CmdStructure
 	{
 		struct _CmdData
-			{uint8_t R, G, B;} CmdData;
-			uint8_t CmdStructArr[2];	
+			{
+			unsigned char CmdByte;
+			uint8_t R_received, G_received, B_received, R_current, G_current, B_current;
+			} CmdData;
+			uint8_t CmdStructArr[7];	
 	} CmdStructure;
 	
 	CmdStructure LampCmdStructure;
 	
-	uint8_t *RED = &LampCmdStructure.CmdData.R;
-	uint8_t *GREEN = &LampCmdStructure.CmdData.G;
-	uint8_t *BLUE = &LampCmdStructure.CmdData.B;
+	unsigned char *CmdByte = &LampCmdStructure.CmdData.CmdByte;
+	uint8_t *R_received = &LampCmdStructure.CmdData.R_received;
+	uint8_t *R_current = &LampCmdStructure.CmdData.R_current;
+	uint8_t *G_received = &LampCmdStructure.CmdData.G_received;
+	uint8_t *G_current = &LampCmdStructure.CmdData.G_current;
+	uint8_t *B_received = &LampCmdStructure.CmdData.B_received;
+	uint8_t *B_current = &LampCmdStructure.CmdData.B_current;
+	 
 #endif
 
 

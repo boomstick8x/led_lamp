@@ -21,9 +21,9 @@ void TIM6_IRQHandler(void)
 	
 }
 
-void Delay_sec(uint8_t z)
+void Delay_msec(uint8_t z)
 	{
-		TIM6->ARR=z*1000;
+		TIM6->ARR=z*10;
 		TIM6->EGR|=TIM_EGR_UG;
 		TIM6->SR &= ~ TIM_SR_UIF;
 		TIM6->CR1 |= TIM_CR1_OPM | TIM_CR1_CEN;
@@ -32,4 +32,4 @@ void Delay_sec(uint8_t z)
 			
 		
 	}
-	
+

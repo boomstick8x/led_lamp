@@ -27,7 +27,7 @@ void ESP_Init(char *cmd)
 			}
 			if (strcmp(cmd,"init"))
 				{
-			Delay_sec(5);
+					Delay_sec(50);
 				USART1_SendString(ESP_Init_Array[N]);
 				N++;				
 				}
