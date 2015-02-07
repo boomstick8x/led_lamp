@@ -46,6 +46,7 @@ void TIM7_IRQHandler(void)
 	
 	if(*R_current<*R_received)
 	*R_current=*R_current+DeltaR;
+	*R_current=*R_current+DeltaR;
 	if(*R_current>*R_received)
 	*R_current=*R_current-DeltaR;
 	

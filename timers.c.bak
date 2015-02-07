@@ -45,10 +45,14 @@ void TIM7_IRQHandler(void)
 	TIM7->SR &= ~ TIM_SR_UIF;//clear update interrupt flag bit
 	
 	if(*R_current<*R_received)
+<<<<<<< HEAD
+	*R_current=*R_current+DeltaR;
+=======
 		{
 		*R_current=*R_current+DeltaR;
 		if(*R_current>)
 		}
+>>>>>>> origin/master
 	if(*R_current>*R_received)
 	*R_current=*R_current-DeltaR;
 	
