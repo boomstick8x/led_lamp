@@ -16,19 +16,6 @@ void TIM6_Init()
 	//TIM6->CR1 |= TIM_CR1_CEN;
 }
 
-void TIM7_Init()
-{
-	RCC->APB1ENR|=RCC_APB1ENR_TIM7EN;
-	NVIC_EnableIRQ(TIM7_IRQn);
-	//NVIC_SetPriority(TIM6_IRQn, 3);
-	TIM7->CR1 |= TIM_CR1_ARPE;
-	TIM7->CR1 &= ~TIM_CR1_UDIS;//UEV disable bit
-	TIM7->DIER  |=TIM_DIER_UIE;//
-	TIM7->ARR=100;//1000-1sec, 100-10/sec
-	TIM7->PSC=16000-1;//16mHz
-	TIM7->CR1 |= TIM_CR1_CEN;
-}
-
 void Delay_msec(uint8_t z)
 {
 	TIM6->ARR=z*1;
@@ -39,21 +26,32 @@ void Delay_msec(uint8_t z)
 	TIM6->SR &= ~TIM_SR_UIF;      	
 }
 
+void TIM7_Init()
+{
+	RCC->APB1ENR|=RCC_APB1ENR_TIM7EN;
+	NVIC_EnableIRQ(TIM7_IRQn);
+	//NVIC_SetPriority(TIM6_IRQn, 3);
+	TIM7->CR1 |= TIM_CR1_ARPE;
+	TIM7->CR1 &= ~TIM_CR1_UDIS;//UEV disable bit
+	TIM7->DIER  |=TIM_DIER_UIE;//
+	TIM7->ARR=100;//1000-1sec, 100-10/sec, 10-100/sec
+	TIM7->PSC=16000-1;//16mHz
+	TIM7->CR1 |= TIM_CR1_CEN;
+}
+
 extern uint8_t *ChangeTime, *R_current, *R_received, *G_current, *G_received, *B_current, *B_received;
-extern uint8_t DeltaR, DeltaG, DeltaB;
+extern float DeltaR, DeltaG, DeltaB;
+
 void TIM7_IRQHandler(void)
 {
 TIM7->SR &= ~ TIM_SR_UIF;//clear update interrupt flag bit
-if(*R_current<*R_received){
-	if(*R_current+DeltaR>254){
-		*R_current=254;
-		return;}
-	*R_current=*R_current+DeltaR;
+if(*R_current<*R_received)
+{
+	if(*R_current+DeltaR>254){*R_current=255; return;}
+	*R_current=*R_current+DeltaR;//!!!
 }	
 if(*R_current>*R_received){
-	if(*R_current-DeltaR<0){
-		*R_current=0;
-		return;}
+	if(*R_current-DeltaR<0){*R_current=0; return;}
 	*R_current=*R_current-DeltaR;
 }
 
@@ -93,6 +91,9 @@ if(*B_current>*B_received){
 	
 	//Y=(X^2)/256	
 //Y=((X+15)^2)/256	
+//Только 8 бит мало для нее, минимум 9 битный режим Шим нужен.
+//Тогда по идее яркость должна стать визуально линейной.
+//(соответственно делить надо на количество значений разрядности)
 }
 
 

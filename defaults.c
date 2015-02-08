@@ -9,7 +9,7 @@ void Defaults()
 	*G_current=1;
 	*B_current=1;
 	*StayTime=1;
-	*ChangeTime=100;
+	*ChangeTime=1;
 	*Enable_Random=0;
 	Color_SetR(*R_current);
 	Color_SetG(*G_current);

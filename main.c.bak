@@ -22,17 +22,14 @@ int main()
 		
 		SystemClock_Init();
 		Color_Init();
-		
-
-
-		
 		GPIO_Init();
 		USART_Init(1);
 		USART_Init(3);
 		USART_SetCB_Data_Received_Ptr(Data_Received);
 		TIM6_Init();
 		TIM7_Init();
-	//	ESP_Init("reset");
+		Defaults();
+		ESP_Init("reset");
 
 while(1)
 		{
