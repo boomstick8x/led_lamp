@@ -1,6 +1,8 @@
 #include <stm32l1xx.h>
+#include <stdint.h>
 #include "color_control.h"
 #include "blur.h"
+#include "cie1931.h"
 
 
 void TIM6_Init()
@@ -34,66 +36,41 @@ void TIM7_Init()
 	TIM7->CR1 |= TIM_CR1_ARPE;
 	TIM7->CR1 &= ~TIM_CR1_UDIS;//UEV disable bit
 	TIM7->DIER  |=TIM_DIER_UIE;//
-	TIM7->ARR=10;//1000-1sec, 100-10/sec, 10-100/sec
+	TIM7->ARR=1;//1000-1sec, 100-10/sec, 10-100/sec
 	TIM7->PSC=16000-1;//16mHz
 	TIM7->CR1 |= TIM_CR1_CEN;
 }
 
 extern uint8_t *ChangeTime, *R_current, *R_received, *G_current, *G_received, *B_current, *B_received;
-extern float DeltaR, DeltaG, DeltaB;
+extern uint8_t DeltaR, DeltaG, DeltaB;
+uint8_t cieI;
+uint32_t iR, iG, iB;
 
 void TIM7_IRQHandler(void)
 {
-TIM7->SR &= ~ TIM_SR_UIF;//clear update interrupt flag bit
-if(*R_current<*R_received)
-{
-	if(*R_current+DeltaR>254){*R_current=255; return;}
-	*R_current=*R_current+DeltaR;//!!!
-}	
-if(*R_current>*R_received){
-	if(*R_current-DeltaR<0){*R_current=0; return;}
-	*R_current=*R_current-DeltaR;
-}
-
-
-if(*G_current<*G_received){
-	if(*G_current+DeltaB>254){
-		*G_current=254;
-		return;}
-	*G_current=*G_current+DeltaB;
-}	
-if(*G_current>*G_received){
-	if(*G_current-DeltaB<0){
-		*G_current=0;
-		return;}
-	*G_current=*G_current-DeltaB;
-}
-
-
-if(*B_current<*B_received){
-	if(*B_current+DeltaB>254){
-		*B_current=254;
-		return;}
-	*B_current=*B_current+DeltaB;
-}	
-if(*B_current>*B_received){
-	if(*B_current-DeltaB<0){
-		*B_current=0;
-		return;}
-	*B_current=*B_current-DeltaB;
-}
-
-
-
+	if(*R_current<*R_received)
+	iR+=DeltaR;
+	if(*R_current>*R_received)
+	iR-=DeltaR;	
+	if(*G_current<*G_received)
+	iG+=DeltaG;
+	if(*G_current>*G_received)
+	iG-=DeltaG;
+	if(*B_current<*B_received)
+	iB+=DeltaB;
+	if(*B_current>*B_received)
+	iB-=DeltaB;
+	*R_current=iR/((*ChangeTime*1000));
+	*G_current=iG/((*ChangeTime*1000));
+	*B_current=iB/((*ChangeTime*1000));
 	Color_SetR(*R_current);
 	Color_SetG(*G_current);
 	Color_SetB(*B_current);
-	
-	//Y=(X^2)/256	
-//Y=((X+15)^2)/256	
-//Только 8 бит мало для нее, минимум 9 битный режим Шим нужен.
-//Тогда по идее яркость должна стать визуально линейной.
-//(соответственно делить надо на количество значений разрядности)
+	TIM7->SR &= ~ TIM_SR_UIF;//clear update interrupt flag bit
+/*if(cie[*R_current]<cie[*R_received])	
+	*R_current=cie[cieI++];
+if(cie[*R_current]>cie[*R_received])
+	*R_current=cie[cieI--];*/
 }
 
 

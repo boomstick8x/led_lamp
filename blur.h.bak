@@ -1,2 +1,2 @@
 #include <stdint.h>
-void Blur();
+void Blur(void);

@@ -4,29 +4,24 @@
 #include "timers.h"
 extern uint8_t *R_current, *R_received, *G_current, *G_received, *B_current, *B_received, *ChangeTime;
 #include "color_control.h"
-float DeltaR, DeltaG, DeltaB;
+uint8_t DeltaR, DeltaG, DeltaB;
 
 void Blur()
 {
-	if(*ChangeTime<10)
-		*ChangeTime=1;
-	else
-//*ChangeTime=TIM7->ARR*10;
-	
 	if(*R_current<*R_received)
 	DeltaR=((*R_received)-(*R_current))/(*ChangeTime);
 	if(*R_current>*R_received)
 	DeltaR=((*R_current)-(*R_received))/(*ChangeTime);
 	
 	if(*G_current<*G_received)
-	DeltaG=((*G_received)-(*G_current))/(*ChangeTime);
+	DeltaG=(*G_received)-(*G_current);
 	if(*G_current>*G_received)
-	DeltaG=((*G_current)-(*G_received))/(*ChangeTime);
+	DeltaG=(*G_current)-(*G_received);
 	
 	if(*B_current<*B_received)
-	DeltaB=((*B_received)-(*B_current))*(*ChangeTime);
+	DeltaB=(*B_received)-(*B_current);
 	if(*B_current>*B_received)
-	DeltaB=((*B_current)-(*B_received))*(*ChangeTime);
+	DeltaB=(*B_current)-(*B_received);
 	
 		//Y=(X^2)/256	
 //Y=((X+15)^2)/256	
