@@ -68,9 +68,9 @@ void TIM7_IRQHandler(void)
 	if(iB==0)
 		iB=1;
 	
-	*R_current=iR/((*ChangeTime*1000));
-	*G_current=iG/((*ChangeTime*1000));
-	*B_current=iB/((*ChangeTime*1000));
+	*R_current=cie[iR/((*ChangeTime*1000))];
+	*G_current=cie[iG/((*ChangeTime*1000))];
+	*B_current=cie[iB/((*ChangeTime*1000))];
 	Color_SetR(*R_current);
 	Color_SetG(*G_current);
 	Color_SetB(*B_current);

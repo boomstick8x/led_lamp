@@ -60,6 +60,14 @@ void TIM7_IRQHandler(void)
 	iB+=DeltaB;
 	if(*B_current>*B_received)
 	iB-=DeltaB;
+	
+	if(iR==0)
+		iR=1;
+	if(iG==0)
+		iG=1;
+	if(iB==0)
+		iB=1;
+	
 	*R_current=iR/((*ChangeTime*1000));
 	*G_current=iG/((*ChangeTime*1000));
 	*B_current=iB/((*ChangeTime*1000));
