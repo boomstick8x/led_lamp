@@ -48,6 +48,7 @@ uint32_t iR, iG, iB;
 
 void TIM7_IRQHandler(void)
 {
+
 	if(*R_current<*R_received)
 	iR+=DeltaR;
 	if(*R_current>*R_received)
@@ -60,20 +61,14 @@ void TIM7_IRQHandler(void)
 	iB+=DeltaB;
 	if(*B_current>*B_received)
 	iB-=DeltaB;
-	
-	if(iR==0)
-		iR=1;
-	if(iG==0)
-		iG=1;
-	if(iB==0)
-		iB=1;
-	
+
 	*R_current=cie[iR/((*ChangeTime*1000))];
 	*G_current=cie[iG/((*ChangeTime*1000))];
 	*B_current=cie[iB/((*ChangeTime*1000))];
-	Color_SetR(*R_current);
-	Color_SetG(*G_current);
-	Color_SetB(*B_current);
+
+	Color_SetR(cie[*R_current]);
+	Color_SetG(cie[*G_current]);
+	Color_SetB(cie[*B_current]);
 	TIM7->SR &= ~ TIM_SR_UIF;//clear update interrupt flag bit
 /*if(cie[*R_current]<cie[*R_received])	
 	*R_current=cie[cieI++];
