@@ -1,4 +1,4 @@
 led_lamp
 ========
 
-my first real project
+stm32 project to control rgb leds with esp8266
