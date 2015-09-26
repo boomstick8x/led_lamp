@@ -1,4 +1,0 @@
-void USART_Init(uint8_t);
-void Usart_SendChar(char);
-void Usart_SendString(char *);
-void USART_SetCB_Data_Received_Ptr(void *);
