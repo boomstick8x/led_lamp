@@ -2,8 +2,11 @@
   font-family: 'Oswald';
   font-weight: 700;
   font-style: normal;
-  src: url('../fonts/Oswald-700/Oswald-700.eot');
-  src: url('../fonts/Oswald-700/Oswald-700.eot') format('woff2'), url('../fonts/Oswald-700/Oswald-700.woff') format('woff'), url('../fonts/Oswald-700/Oswald-700.woff2') format('truetype'), url('../fonts/Oswald-700/Oswald-700.svg') format('svg');
+  src: url('../fonts/Oswald-700/Oswald-700.eot') format('eot'),
+  url('../fonts/Oswald-700/Oswald-700.ttf') format('truetype'),
+  url('../fonts/Oswald-700/Oswald-700.woff') format('woff'),
+  url('../fonts/Oswald-700/Oswald-700.woff2') format('woff2'),
+  url('../fonts/Oswald-700/Oswald-700.svg') format('svg');
 }
 html, body {
   height: 100%;
